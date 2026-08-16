@@ -79,6 +79,7 @@ fun HomeScreen(navController: NavHostController) {
         )
     }
     val audioDeniedMsg = stringResource(R.string.audio_perm_off)
+    val restartingMsg = stringResource(R.string.listener_restarting)
 
     // 音频权限 → Visualizer（无屏幕捕获弹窗）
     val audioPermissionLauncher = rememberLauncherForActivityResult(
@@ -198,7 +199,7 @@ fun HomeScreen(navController: NavHostController) {
                     val needsManual = RestartListenerHelper.restart(context)
                     scope.launch {
                         if (needsManual) {
-                            snackbar.showSnackbar(stringResource(R.string.listener_restarting))
+                            snackbar.showSnackbar(restartingMsg)
                         } else {
                             kotlinx.coroutines.delay(800)
                             listenerEnabled =

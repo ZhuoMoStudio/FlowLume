@@ -5,8 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -54,7 +53,7 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(navController: NavHostController) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val activity = androidx.activity.compose.LocalActivity.current
+    val activity = LocalActivity.current
     val mode by AppContainer.uiMode.collectAsState()
     val (config, update) = useRenderConfig(mode)
     val charcoal by AppContainer.charcoalTheme.collectAsState()
