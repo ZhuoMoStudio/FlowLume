@@ -77,13 +77,13 @@ class AudioEngine(
     /** 波形 RMS → 0..1 能量 */
     private fun rms(wave: ByteArray): Float {
         if (wave.isEmpty()) return 0f
-        var sum = 0.0
+        var sum = 0L
         for (b in wave) {
             val v = (b.toInt() and 0xFF) - 128
             sum += v * v
         }
-        val rms = sqrt(sum / wave.size)
-        return (rms / 128f).coerceIn(0f, 1f)
+        val rms = sqrt(sum.toDouble() / wave.size)
+        return (rms / 128.0).toFloat().coerceIn(0f, 1f)
     }
 
     /** Visualizer FFT（偶实奇虚）→ 8 波段能量 */
