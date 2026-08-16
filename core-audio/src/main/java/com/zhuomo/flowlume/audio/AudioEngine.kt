@@ -1,7 +1,6 @@
 package com.zhuomo.flowlume.audio
 
 import android.content.Context
-import android.content.Intent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -9,71 +8,108 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.math.PI
-import kotlin.math.cos
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 /**
- * 音频引擎：捕获 → FFT → 频段分桶 → 节拍检测 → FrameData 发布。
- * 渲染 GL 线程仅消费最新快照，线程解耦。
+ * 音频引擎（Visualizer 版）：波形 RMS 能量 + FFT 波段 + 节拍检测 → FrameData。
+ * 合规：仅分析设备输出音频的可视化数据，绝不采集麦克风。
  */
 class AudioEngine(
     private val context: Context,
     private val scope: CoroutineScope
 ) {
-    private val capture = AudioCaptureManager(context)
+    private val capture = VisualizerCapture(context)
     private val _frames = MutableSharedFlow<FrameData>(replay = 1, extraBufferCapacity = 2)
     val frames: SharedFlow<FrameData> = _frames
+
     private var job: Job? = null
+    private val beatDetector = BeatDetector()
+    private var pulse = 0f
 
-    val isRunning: Boolean get() = capture.isCapturing
+    @Volatile private var latestWave: ByteArray? = null
+    @Volatile private var latestFft: ByteArray? = null
 
-    fun start(resultCode: Int, data: Intent) {
+    val isRunning: Boolean get() = capture.isRunning
+
+    fun start() {
         if (job?.isActive == true) return
-        if (!capture.start(resultCode, data)) return
-        job = scope.launch { captureLoop() }
+        capture.listener = object : VisualizerCapture.Listener {
+            override fun onData(waveform: ByteArray?, fft: ByteArray?) {
+                if (waveform != null) latestWave = waveform
+                if (fft != null) latestFft = fft
+            }
+        }
+        capture.start()
+        job = scope.launch { emitLoop() }
     }
 
     fun stop() {
         job?.cancel()
         job = null
         capture.stop()
+        latestWave = null
+        latestFft = null
         _frames.tryEmit(FrameData.EMPTY)
     }
 
-    private suspend fun captureLoop() {
-        val n = 1024
-        val buf = ShortArray(n)
-        val re = FloatArray(n)
-        val im = FloatArray(n)
-        val window = hannWindow(n)
-        val beatDetector = BeatDetector()
+    private suspend fun emitLoop() {
         var prevEnergy = 0f
-        var pulse = 0f
-        var warmup = 8 // 丢弃前几帧预热
-
         while (scope.coroutineContext.isActive) {
-            val read = capture.read(buf)
-            if (read > 0) {
-                for (i in 0 until n) {
-                    re[i] = (buf[i].toFloat() / 32768f) * window[i]
-                    im[i] = 0f
-                }
-                Fft.forward(re, im, n)
-                val mag = FloatArray(n) { i -> sqrt(re[i] * re[i] + im[i] * im[i]) }
-                val bands = Fft.bandEnergies(mag, 44100)
-                val raw = bands.average().toFloat()
-                val energy = if (warmup > 0) { warmup--; 0f } else prevEnergy * 0.75f + raw * 0.25f
-                val beat = beatDetector.process(energy, System.currentTimeMillis())
-                pulse = if (beat) 1f else (pulse * 0.92f).coerceAtLeast(0f)
-                _frames.tryEmit(FrameData(energy, bands, beat, pulse))
-                prevEnergy = energy
-            }
-            delay(16)
+            val wave = latestWave
+            val fft = latestFft
+
+            val energy = if (wave != null) {
+                val smoothed = prevEnergy * 0.7f + rms(wave) * 0.3f
+                smoothed
+            } else 0f
+
+            val bands = if (fft != null) fftBands(fft) else FloatArray(FrameData.BAND_COUNT)
+
+            val beat = beatDetector.process(energy, System.currentTimeMillis())
+            pulse = if (beat) 1f else (pulse * 0.92f).coerceAtLeast(0f)
+
+            _frames.tryEmit(FrameData(energy, bands, beat, pulse))
+            prevEnergy = energy
+            delay(33) // ~30Hz
         }
     }
 
-    private fun hannWindow(n: Int): FloatArray = FloatArray(n) { i ->
-        0.5f * (1f - cos(2.0 * PI * i / (n - 1)).toFloat())
+    /** 波形 RMS → 0..1 能量 */
+    private fun rms(wave: ByteArray): Float {
+        if (wave.isEmpty()) return 0f
+        var sum = 0.0
+        for (b in wave) {
+            val v = (b.toInt() and 0xFF) - 128
+            sum += v * v
+        }
+        val rms = sqrt(sum / wave.size)
+        return (rms / 128f).coerceIn(0f, 1f)
+    }
+
+    /** Visualizer FFT（偶实奇虚）→ 8 波段能量 */
+    private fun fftBands(fft: ByteArray): FloatArray {
+        val n = fft.size / 2
+        val mag = FloatArray(n)
+        for (i in 0 until n) {
+            val real = (fft[i * 2].toInt() and 0xFF) - 128
+            val imag = (fft[i * 2 + 1].toInt() and 0xFF) - 128
+            mag[i] = sqrt((real * real + imag * imag).toFloat())
+        }
+        // 低频在前，直接按比例分桶
+        val bands = FloatArray(FrameData.BAND_COUNT)
+        val per = mag.size / bands.size
+        for (b in 0 until bands.size) {
+            var s = 0f
+            val start = b * per
+            val end = minOf(start + per, mag.size)
+            for (i in start until end) s += mag[i]
+            bands[b] = (s / (end - start).coerceAtLeast(1)).coerceIn(0f, 1f) / 64f
+        }
+        return bands
+    }
+
+    companion object {
+        private val ABS_0 = abs(0f)
     }
 }

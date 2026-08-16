@@ -1,5 +1,6 @@
 package com.zhuomo.flowlume.app.fullscreen
 
+import android.content.Context
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.FrameLayout
@@ -7,10 +8,15 @@ import androidx.compose.ui.platform.ComposeView
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 import com.zhuomo.flowlume.app.di.AppContainer
+import com.zhuomo.flowlume.app.util.LocaleHelper
 import com.zhuomo.flowlume.ui.FlowLumeTheme
 
 /** 形态二：App 全屏窗口模式（LibGDX AndroidApplication + Compose 控制浮层） */
 class FullscreenActivity : AndroidApplication() {
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.apply(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +30,15 @@ class FullscreenActivity : AndroidApplication() {
             disableAudio = true              // 音频统一走 core-audio 模块
             r = 8; g = 8; b = 8; a = 0
         }
-        initialize(FullscreenGame(), cfg)
+
+        // 全屏渲染初始化失败兜底：捕获异常，避免整个 App 闪退
+        runCatching {
+            initialize(FullscreenGame(), cfg)
+        }.onFailure {
+            android.util.Log.e("FlowLumeFullscreen", "LibGDX init failed", it)
+            finish()
+            return
+        }
 
         // Compose 控制浮层（透明，未消费的触摸事件穿透到 GLSurfaceView）
         val overlay = ComposeView(this)

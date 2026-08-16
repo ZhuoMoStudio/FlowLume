@@ -1,5 +1,6 @@
 package com.zhuomo.flowlume.app.fullscreen
 
+import android.util.Log
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -24,35 +25,59 @@ class FullscreenGame : Game() {
     lateinit var batch: SpriteBatch
         private set
 
-    override fun create() {
-        FlowLumeEffects.bootstrap()
-        renderCore = RenderCore(Mode.FULLSCREEN, EffectRegistry.all())
-        renderCore.create()
-        fontCache = FontCache(Gdx.files.internal("fonts/Roboto-Medium.ttf"))
-        batch = SpriteBatch()
+    /** 初始化失败时置 true：渲染层降级为纯色，避免闪退 */
+    @Volatile var initFailed = false
+        private set
 
-        // 跨线程投递：封面 / 配置热重载 / 音频帧（GL 线程内消费）
-        AppContainer.scope.launch {
-            ArtBus.events.collect { renderCore.pendingArt = it.artwork }
-        }
-        AppContainer.scope.launch {
-            ReloadBus.events.collect {
-                if (it.mode == Mode.FULLSCREEN) {
-                    renderCore.pendingConfig = ConfigStore.current(Mode.FULLSCREEN)
+    override fun create() {
+        try {
+            FlowLumeEffects.bootstrap()
+            renderCore = RenderCore(Mode.FULLSCREEN, EffectRegistry.all())
+            renderCore.create()
+            fontCache = FontCache(Gdx.files.internal("fonts/Roboto-Medium.ttf"))
+            batch = SpriteBatch()
+
+            // 跨线程投递：封面 / 配置热重载 / 音频帧（GL 线程内消费）
+            AppContainer.scope.launch {
+                ArtBus.events.collect { renderCore.pendingArt = it.artwork }
+            }
+            AppContainer.scope.launch {
+                ReloadBus.events.collect {
+                    if (it.mode == Mode.FULLSCREEN) {
+                        renderCore.pendingConfig = ConfigStore.current(Mode.FULLSCREEN)
+                    }
                 }
             }
-        }
-        AppContainer.scope.launch {
-            AppContainer.audioEngine.frames.collect { renderCore.latestFrameData = it }
-        }
+            AppContainer.scope.launch {
+                AppContainer.audioEngine.frames.collect { renderCore.latestFrameData = it }
+            }
 
-        setScreen(FlowScreen(this))
+            setScreen(FlowScreen(this))
+        } catch (e: Throwable) {
+            Log.e(TAG, "FullscreenGame.create failed, degraded mode", e)
+            initFailed = true
+        }
+    }
+
+    override fun render() {
+        if (initFailed) {
+            Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+            Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT)
+            return
+        }
+        super.render()
     }
 
     override fun dispose() {
         super.dispose()
-        batch.dispose()
-        fontCache.dispose()
-        renderCore.dispose()
+        runCatching {
+            if (::batch.isInitialized) batch.dispose()
+            if (::fontCache.isInitialized) fontCache.dispose()
+            if (::renderCore.isInitialized) renderCore.dispose()
+        }
+    }
+
+    companion object {
+        private const val TAG = "FlowLumeGame"
     }
 }

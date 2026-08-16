@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">FlowLume · 弥光</string>
+
+    <!-- Bottom tabs -->
+    <string name="tab_home">首页</string>
+    <string name="tab_render">渲染</string>
+    <string name="tab_fx">动效</string>
+    <string name="tab_timer">计时器</string>
+    <string name="tab_settings">设置</string>
+
+    <!-- Common -->
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
+    <string name="back">返回</string>
+
+    <!-- Page 1 Home -->
+    <string name="brand_subtitle">流体音乐动态壁纸 · 弥光</string>
+    <string name="permissions">权限</string>
+    <string name="notif_perm">允许阅读通知</string>
+    <string name="notif_perm_on">已授权 · 自动提取专辑封面</string>
+    <string name="notif_perm_off">未授权 · 壁纸无法获取封面（核心权限）</string>
+    <string name="audio_perm">允许获取音频权限（可选）</string>
+    <string name="audio_perm_on">已授权 · 音频联动动效可用</string>
+    <string name="audio_perm_off">未授权 · 音频联动动效不可用</string>
+    <string name="now_playing">正在播放</string>
+    <string name="no_music">未检测到播放中的音乐\n播放音乐后自动提取专辑封面</string>
+    <string name="restart_listener">一键重启监听服务</string>
+    <string name="set_wallpaper">设置壁纸</string>
+    <string name="render_mode">运行形态</string>
+    <string name="mode_wallpaper">桌面壁纸</string>
+    <string name="mode_fullscreen">App 全屏</string>
+    <string name="config_independent">两种形态参数独立保存，可在渲染页一键互拷</string>
+    <string name="open_fullscreen">打开全屏模式</string>
+    <string name="listener_restarting">监听服务重启中…稍后查看状态</string>
+
+    <!-- Page 2 Render -->
+    <string name="editing_wallpaper">正在编辑：桌面壁纸配置</string>
+    <string name="editing_fullscreen">正在编辑：App 全屏配置</string>
+    <string name="fluid_card">流体设定</string>
+    <string name="fluid_scale">流体缩放</string>
+    <string name="flow_speed">流动速度</string>
+    <string name="turbulence">扰动强度</string>
+    <string name="graphics_card">图形设定</string>
+    <string name="mode_blur">BLUR 基础模糊</string>
+    <string name="mode_glass">FLUTED GLASS 波纹玻璃折射</string>
+    <string name="album_card">专辑封面</string>
+    <string name="restore_art">重启应用保留上次封面</string>
+    <string name="keep_art_pause">音乐暂停保留上次封面</string>
+    <string name="default_tone">默认色调（无音乐时）</string>
+    <string name="global_adjust">全局画面调节</string>
+    <string name="brightness">亮度</string>
+    <string name="saturation">色彩饱和度</string>
+    <string name="sync_card">配置互拷</string>
+    <string name="copy_to_target">复制当前配置到另一形态</string>
+    <string name="copy_config">一键复制</string>
+    <string name="overwrite_title">覆盖目标配置？</string>
+    <string name="overwrite_msg">将用当前配置覆盖目标形态的全部参数，确定？</string>
+    <string name="overwrite">覆盖</string>
+
+    <!-- Page 3 FX -->
+    <string name="presets">预设</string>
+    <string name="save_preset">保存当前</string>
+    <string name="import_preset">导入</string>
+    <string name="save_preset_title">保存预设</string>
+    <string name="save_preset_msg">为当前全部动效参数命名</string>
+    <string name="group_base">基础流体动效</string>
+    <string name="group_audio">音频联动动效</string>
+    <string name="group_particle">装饰粒子动效</string>
+    <string name="perf_on_warning">性能模式已开启 — 装饰粒子动效组已强制关闭</string>
+    <string name="intensity">强度</string>
+    <string name="speed">速度</string>
+    <string name="size">尺寸</string>
+    <string name="no_effects">无动效</string>
+
+    <!-- Page 4 Timer -->
+    <string name="timer_mode">模式</string>
+    <string name="count_up">正计时</string>
+    <string name="count_down">倒计时</string>
+    <string name="pomodoro">番茄工作计时器</string>
+    <string name="duration">时长</string>
+    <string name="minutes">时长（分钟）</string>
+    <string name="work_min">工作（分钟）</string>
+    <string name="break_min">休息（分钟）</string>
+    <string name="loop">循环模式</string>
+    <string name="alert_card">提醒方式</string>
+    <string name="vibrate">震动</string>
+    <string name="dialog">弹窗提示</string>
+    <string name="sound">提示音</string>
+    <string name="time_text">时间文字样式</string>
+    <string name="font_size">字号</string>
+    <string name="opacity">透明度</string>
+    <string name="stroke">描边粗细</string>
+    <string name="layer_top">顶层</string>
+    <string name="layer_bottom">底层</string>
+    <string name="open_fullscreen_start">打开全屏并开始</string>
+    <string name="timer_note">计时器为全屏模式专属功能；时间文字由渲染引擎绘制</string>
+
+    <!-- Page 5 Settings -->
+    <string name="storage_card">存储行为</string>
+    <string name="separate_configs">桌面/全屏模式相互独立储存参数</string>
+    <string name="appearance_card">外观</string>
+    <string name="adaptive_icon">启动器自适应着色</string>
+    <string name="adaptive_icon_note">图标随系统主题变色（Android 13+）</string>
+    <string name="theme_dark">DARK 纯黑深色</string>
+    <string name="theme_charcoal">CHARCOAL 灰黑深色</string>
+    <string name="perf_card">性能</string>
+    <string name="perf_mode">性能模式（降低分辨率/关闭粒子，适配低端机）</string>
+    <string name="service_card">服务</string>
+    <string name="restart_listener_btn">一键重启通知监听</string>
+    <string name="battery_opt">电池优化白名单</string>
+    <string name="more_card">更多</string>
+    <string name="experimental">实验性功能</string>
+    <string name="about">关于</string>
+    <string name="help">帮助中心</string>
+    <string name="language">语言</string>
+    <string name="lang_follow_system">跟随系统</string>
+    <string name="lang_zh">中文</string>
+    <string name="lang_en">English</string>
+
+    <!-- Page 6 Experimental -->
+    <string name="experimental_warn_title">⚠ 实验性功能</string>
+    <string name="experimental_warn_body">板块内功能持续开发，稳定性较差，仅供测试体验。可能导致崩溃或异常表现。</string>
+    <string name="debug_view">调试视图</string>
+    <string name="debug_view_note">渲染画面叠加 HUD（FPS / 频谱 / 监听状态）</string>
+    <string name="coming_soon">规划中</string>
+    <string name="mask_segmentation">封面智能分割（预览）</string>
+    <string name="dof_simulation">景深模拟（规划）</string>
+    <string name="experimental_note">实验性功能默认关闭，开启后请留意耗电与稳定性。</string>
+
+    <!-- Page 7 About -->
+    <string name="links">链接</string>
+    <string name="feedback">反馈问题</string>
+    <string name="other_works">其他作品</string>
+    <string name="credits">致谢</string>
+    <string name="credits_algo">图形算法</string>
+    <string name="credits_algo_v">Intel Kawase Blur · Inigo Quilez Domain Wrapping</string>
+    <string name="credits_lib">开源库</string>
+    <string name="credits_lib_v">LibGDX (BadlogicGames) · gdx-freetype · Jetpack · Kotlinx</string>
+    <string name="credits_ref">音频可视化参考</string>
+    <string name="credits_ref_v">AudioViz · Droid-vizu · wave.js</string>
+    <string name="credits_icon">图标</string>
+    <string name="credits_icon_v">自绘 SVG 矢量图标集</string>
+
+    <!-- Page 8 Help -->
+    <string name="help_how_title">软件工作原理</string>
+    <string name="help_how_body">监听系统媒体通知 → 提取专辑封面 → 引擎将其"融化"为无缝流体光影（Kawase Blur + Domain Wrapping）→ 可选频谱/节拍联动 → 渲染到桌面或全屏。全部本地计算，无任何上传。</string>
+    <string name="help_notif_title">「允许阅读通知」权限说明</string>
+    <string name="help_notif_body">仅读取媒体播放类通知中公开的歌曲/封面信息，绝不读取聊天、短信等私人通知；数据不出设备。权限被回收后封面将停止更新，可使用「一键重启监听」恢复。</string>
+    <string name="help_audio_title">音频权限答疑</string>
+    <string name="help_audio_body">程序仅通过系统 Visualizer 分析设备自身输出音频用于可视化，绝不采集麦克风数据，遵循 Google 官方最佳实践。</string>
+    <string name="help_fix_title">读取不到专辑封面？排查</string>
+    <string name="help_fix_body">1. 切歌一次触发新通知；2. 检查通知权限；3. 重启监听服务；4. 确认播放器通知未被折叠；5. 加入电池优化白名单。</string>
+    <string name="help_player_title">播放器兼容说明</string>
+    <string name="help_player_body">原生兼容 Apple Music / Spotify / YouTube Music / SoundCloud 等标准媒体通知；QQ音乐等国产播放器使用自定义样式，需在播放器设置中切换为「系统原生通知样式」。</string>
+    <string name="help_battery_title">电池优化与后台保活</string>
+    <string name="help_battery_body">激进省电策略可能冻结后台监听，建议在电池管理中将 FlowLume 设为「不限制」；App 内提供一键重启监听与白名单快捷入口。</string>
+
+    <!-- Fullscreen overlay -->
+    <string name="timer_running">运行中</string>
+    <string name="timer_paused">已暂停</string>
+    <string name="timer_ready">就绪</string>
+    <string name="start">开始</string>
+    <string name="resume">继续</string>
+    <string name="pause">暂停</string>
+    <string name="reset">重置</string>
+    <string name="hide_ui">隐藏全部控件</string>
+    <string name="time_up">时间到</string>
+    <string name="work_done">工作结束，休息一下</string>
+    <string name="break_done">休息结束，继续专注</string>
+</resources>

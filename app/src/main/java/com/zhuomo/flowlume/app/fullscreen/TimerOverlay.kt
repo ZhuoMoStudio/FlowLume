@@ -25,9 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zhuomo.flowlume.app.R
 import com.zhuomo.flowlume.app.di.AppContainer
 import com.zhuomo.flowlume.app.ui.useTimerConfig
 import com.zhuomo.flowlume.timer.ReminderBus
@@ -84,9 +86,9 @@ fun TimerOverlay() {
                 )
                 Text(
                     text = when {
-                        state.running -> "RUNNING"
-                        state.elapsedMs > 0 -> "PAUSED"
-                        else -> "READY"
+                        state.running -> stringResource(R.string.timer_running)
+                        state.elapsedMs > 0 -> stringResource(R.string.timer_paused)
+                        else -> stringResource(R.string.timer_ready)
                     },
                     fontSize = 12.sp,
                     color = FlowColors.TextSecondary,
@@ -98,23 +100,23 @@ fun TimerOverlay() {
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     PrimaryButton(
-                        text = if (state.running) "RESUME" else "START",
+                        text = if (state.running) stringResource(R.string.resume) else stringResource(R.string.start),
                         onClick = { AppContainer.timerEngine.start(timerCfg) },
                         modifier = Modifier.weight(1f)
                     )
                     SecondaryButton(
-                        text = "PAUSE",
+                        text = stringResource(R.string.pause),
                         onClick = { AppContainer.timerEngine.pause() },
                         modifier = Modifier.weight(1f)
                     )
                     SecondaryButton(
-                        text = "RESET",
+                        text = stringResource(R.string.reset),
                         onClick = { AppContainer.timerEngine.reset() },
                         modifier = Modifier.weight(1f)
                     )
                 }
                 Spacer(Modifier.height(8.dp))
-                SecondaryButton(text = "HIDE UI 隐藏全部控件") {
+                SecondaryButton(text = stringResource(R.string.hide_ui)) {
                     AppContainer.uiControlsHidden.value = true
                 }
             }
@@ -127,17 +129,20 @@ fun TimerOverlay() {
                 onDismissRequest = { timeUp = null },
                 containerColor = FlowColors.BgCard,
                 shape = RoundedCornerShape(16.dp),
-                title = { Text("TIME'S UP 时间到", color = FlowColors.TextPrimary) },
+                title = { Text(stringResource(R.string.time_up), color = FlowColors.TextPrimary) },
                 text = {
                     Text(
-                        text = if (ev.state.phase == com.zhuomo.flowlume.timer.TimerPhase.WORK)
-                            "工作结束，休息一下" else "休息结束，继续专注",
+                        text = if (ev.state.phase == com.zhuomo.flowlume.timer.TimerPhase.WORK) {
+                            stringResource(R.string.work_done)
+                        } else {
+                            stringResource(R.string.break_done)
+                        },
                         color = FlowColors.TextSecondary
                     )
                 },
                 confirmButton = {
                     Text(
-                        text = "OK",
+                        text = stringResource(R.string.ok),
                         color = FlowColors.Accent,
                         modifier = Modifier
                             .clickable { timeUp = null }

@@ -1,4 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App -->
     <string name="app_name">FlowLume · 弥光</string>
+
+    <!-- Bottom tabs -->
+    <string name="tab_home">HOME</string>
+    <string name="tab_render">RENDER</string>
+    <string name="tab_fx">FX</string>
+    <string name="tab_timer">TIMER</string>
+    <string name="tab_settings">SETTINGS</string>
+
+    <!-- Common -->
+    <string name="cancel">CANCEL</string>
+    <string name="ok">OK</string>
+    <string name="back">Back</string>
+
+    <!-- Page 1 Home -->
+    <string name="brand_subtitle">Fluid Music Wallpaper · 弥光</string>
+    <string name="permissions">PERMISSIONS</string>
+    <string name="notif_perm">Allow notification access</string>
+    <string name="notif_perm_on">Granted · album art auto-detected</string>
+    <string name="notif_perm_off">Not granted · wallpaper cannot read cover art (core)</string>
+    <string name="audio_perm">Allow audio capture (optional)</string>
+    <string name="audio_perm_on">Granted · audio-reactive effects available</string>
+    <string name="audio_perm_off">Not granted · audio-reactive effects disabled</string>
+    <string name="now_playing">NOW PLAYING</string>
+    <string name="no_music">NO MUSIC DETECTED\nPlay music to automatically extract album art</string>
+    <string name="restart_listener">Restart notification listener</string>
+    <string name="set_wallpaper">Set as wallpaper</string>
+    <string name="render_mode">RENDER MODE</string>
+    <string name="mode_wallpaper">Desktop wallpaper</string>
+    <string name="mode_fullscreen">App fullscreen</string>
+    <string name="config_independent">Both modes keep independent settings; copy with one tap in RENDER tab</string>
+    <string name="open_fullscreen">Open fullscreen mode</string>
+    <string name="listener_restarting">Listener restarting… check status shortly</string>
+
+    <!-- Page 2 Render -->
+    <string name="editing_wallpaper">EDITING: DESKTOP WALLPAPER</string>
+    <string name="editing_fullscreen">EDITING: APP FULLSCREEN</string>
+    <string name="fluid_card">FLUID</string>
+    <string name="fluid_scale">Fluid scale</string>
+    <string name="flow_speed">Flow speed</string>
+    <string name="turbulence">Turbulence</string>
+    <string name="graphics_card">GRAPHICS</string>
+    <string name="mode_blur">BLUR · soft blur</string>
+    <string name="mode_glass">FLUTED GLASS · refractive glass</string>
+    <string name="album_card">ALBUM ART</string>
+    <string name="restore_art">Restore last cover on reboot</string>
+    <string name="keep_art_pause">Keep cover while paused</string>
+    <string name="default_tone">Default tone (no music)</string>
+    <string name="global_adjust">GLOBAL ADJUST</string>
+    <string name="brightness">Brightness</string>
+    <string name="saturation">Saturation</string>
+    <string name="sync_card">SYNC</string>
+    <string name="copy_to_target">Copy current settings to the other mode</string>
+    <string name="copy_config">Copy configuration</string>
+    <string name="overwrite_title">OVERWRITE TARGET CONFIG?</string>
+    <string name="overwrite_msg">This replaces all parameters of the target mode. Continue?</string>
+    <string name="overwrite">OVERWRITE</string>
+
+    <!-- Page 3 FX -->
+    <string name="presets">PRESETS</string>
+    <string name="save_preset">Save current</string>
+    <string name="import_preset">Import</string>
+    <string name="save_preset_title">SAVE PRESET</string>
+    <string name="save_preset_msg">Name your current effect configuration</string>
+    <string name="group_base">BASE FLUID</string>
+    <string name="group_audio">AUDIO SYNC</string>
+    <string name="group_particle">PARTICLE DECOR</string>
+    <string name="perf_on_warning">PERFORMANCE MODE ON — particle effects forced off</string>
+    <string name="intensity">Intensity</string>
+    <string name="speed">Speed</string>
+    <string name="size">Size</string>
+    <string name="no_effects">NO EFFECTS</string>
+
+    <!-- Page 4 Timer -->
+    <string name="timer_mode">MODE</string>
+    <string name="count_up">Count up</string>
+    <string name="count_down">Count down</string>
+    <string name="pomodoro">Pomodoro</string>
+    <string name="duration">DURATION</string>
+    <string name="minutes">Minutes</string>
+    <string name="work_min">Work (min)</string>
+    <string name="break_min">Break (min)</string>
+    <string name="loop">Loop mode</string>
+    <string name="alert_card">ALERT</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="dialog">Dialog popup</string>
+    <string name="sound">Sound</string>
+    <string name="time_text">TIME TEXT</string>
+    <string name="font_size">Font size</string>
+    <string name="opacity">Opacity</string>
+    <string name="stroke">Stroke width</string>
+    <string name="layer_top">Top layer</string>
+    <string name="layer_bottom">Bottom layer</string>
+    <string name="open_fullscreen_start">Open fullscreen and start</string>
+    <string name="timer_note">Timer is exclusive to fullscreen mode; text is drawn by the render engine</string>
+
+    <!-- Page 5 Settings -->
+    <string name="storage_card">STORAGE</string>
+    <string name="separate_configs">Store wallpaper &amp; fullscreen settings independently</string>
+    <string name="appearance_card">APPEARANCE</string>
+    <string name="adaptive_icon">Adaptive launcher theming</string>
+    <string name="adaptive_icon_note">Themed icon follows system color (Android 13+)</string>
+    <string name="theme_dark">DARK · pure black</string>
+    <string name="theme_charcoal">CHARCOAL · dark grey</string>
+    <string name="perf_card">PERFORMANCE</string>
+    <string name="perf_mode">Performance mode (lower resolution, fewer particles)</string>
+    <string name="service_card">SERVICE</string>
+    <string name="restart_listener_btn">Restart notification listener</string>
+    <string name="battery_opt">Battery optimization whitelist</string>
+    <string name="more_card">MORE</string>
+    <string name="experimental">Experimental</string>
+    <string name="about">About</string>
+    <string name="help">Help center</string>
+    <string name="language">LANGUAGE</string>
+    <string name="lang_follow_system">Follow system</string>
+    <string name="lang_zh">中文</string>
+    <string name="lang_en">English</string>
+
+    <!-- Page 6 Experimental -->
+    <string name="experimental_warn_title">⚠ EXPERIMENTAL FEATURES</string>
+    <string name="experimental_warn_body">Features here are under active development, unstable, for testing only.</string>
+    <string name="debug_view">Debug view</string>
+    <string name="debug_view_note">Overlay HUD (FPS / spectrum / listener status)</string>
+    <string name="coming_soon">COMING SOON</string>
+    <string name="mask_segmentation">Cover smart segmentation (preview)</string>
+    <string name="dof_simulation">Depth-of-field simulation (planned)</string>
+    <string name="experimental_note">Experimental features are off by default; watch stability and battery.</string>
+
+    <!-- Page 7 About -->
+    <string name="links">LINKS</string>
+    <string name="feedback">Feedback</string>
+    <string name="other_works">Other works</string>
+    <string name="credits">CREDITS</string>
+    <string name="credits_algo">Graphics algorithms</string>
+    <string name="credits_algo_v">Intel Kawase Blur · Inigo Quilez Domain Wrapping</string>
+    <string name="credits_lib">Open source libraries</string>
+    <string name="credits_lib_v">LibGDX (BadlogicGames) · gdx-freetype · Jetpack · Kotlinx</string>
+    <string name="credits_ref">Audio visualization references</string>
+    <string name="credits_ref_v">AudioViz · Droid-vizu · wave.js</string>
+    <string name="credits_icon">Icons</string>
+    <string name="credits_icon_v">Hand-drawn SVG vector set</string>
+
+    <!-- Page 8 Help -->
+    <string name="help_how_title">How it works</string>
+    <string name="help_how_body">Listens to the system media notification → extracts album art → the engine melts it into seamless fluid light (Kawase Blur + Domain Wrapping) → optional audio spectrum/beat sync → renders to desktop or fullscreen. Everything runs locally; nothing is uploaded.</string>
+    <string name="help_notif_title">Notification access</string>
+    <string name="help_notif_body">Only media-playback notifications are read for public song/cover info. Private notifications (chat, SMS) are never read; data never leaves the device. If the permission is revoked, covers stop updating — use Restart listener to recover.</string>
+    <string name="help_audio_title">Audio permission FAQ</string>
+    <string name="help_audio_body">The app only analyzes the device\u2019s own audio output via the system Visualizer for visualization — it never records microphone audio, per Google\u2019s best practices.</string>
+    <string name="help_fix_title">Cover not updating? Try</string>
+    <string name="help_fix_body">1. Skip a track to trigger a new notification; 2. Re-check notification permission; 3. Restart the listener; 4. Make sure the player\u2019s notification is not collapsed; 5. Add to battery whitelist.</string>
+    <string name="help_player_title">Player compatibility</string>
+    <string name="help_player_body">Native support: Apple Music / Spotify / YouTube Music / SoundCloud and other standard media notifications. Chinese players (QQ Music, etc.) use custom styles — switch the player to \u201csystem notification style\u201d in its settings.</string>
+    <string name="help_battery_title">Battery optimization</string>
+    <string name="help_battery_body">Aggressive battery savers may freeze the background listener. Set FlowLume to \u201cUnrestricted\u201d in battery settings; in-app restart and whitelist shortcuts are provided.</string>
+
+    <!-- Fullscreen overlay -->
+    <string name="timer_running">RUNNING</string>
+    <string name="timer_paused">PAUSED</string>
+    <string name="timer_ready">READY</string>
+    <string name="start">START</string>
+    <string name="resume">RESUME</string>
+    <string name="pause">PAUSE</string>
+    <string name="reset">RESET</string>
+    <string name="hide_ui">Hide all controls</string>
+    <string name="time_up">TIME\u2019S UP</string>
+    <string name="work_done">Work session done — take a break</string>
+    <string name="break_done">Break done — back to focus</string>
 </resources>

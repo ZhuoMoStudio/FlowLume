@@ -20,8 +20,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.zhuomo.flowlume.app.R
 import com.zhuomo.flowlume.app.di.AppContainer
 import com.zhuomo.flowlume.app.ui.SubPageScaffold
 import com.zhuomo.flowlume.app.ui.useRenderConfig
@@ -33,11 +35,10 @@ import com.zhuomo.flowlume.ui.FxCard
 /** 页面6 · 实验性功能分区 */
 @Composable
 fun ExperimentalScreen(navController: NavHostController) {
-    val context = LocalContext.current
     val mode by AppContainer.uiMode.collectAsState()
     val (config, update) = useRenderConfig(mode)
 
-    SubPageScaffold(title = "EXPERIMENTAL 实验性功能", navController = navController) {
+    SubPageScaffold(title = stringResource(R.string.experimental), navController = navController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -56,33 +57,33 @@ fun ExperimentalScreen(navController: NavHostController) {
                     .padding(12.dp)
             ) {
                 Text(
-                    text = "⚠ EXPERIMENTAL FEATURES",
+                    text = stringResource(R.string.experimental_warn_title),
                     color = FlowColors.Danger,
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "板块内功能持续开发，稳定性较差，仅供测试体验。可能导致崩溃或异常表现。",
+                    text = stringResource(R.string.experimental_warn_body),
                     color = FlowColors.TextSecondary,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
 
-            FxCard(title = "DEBUG TOOLS 调试") {
+            FxCard(title = "DEBUG TOOLS") {
                 CheckRow(
-                    title = "DEBUG VIEW 调试视图",
-                    subtitle = "渲染画面叠加 HUD（FPS / 频谱 / 监听状态）",
+                    title = stringResource(R.string.debug_view),
+                    subtitle = stringResource(R.string.debug_view_note),
                     checked = config.debugView
                 ) { update(config.copy(debugView = it)) }
             }
 
-            FxCard(title = "COMING SOON 规划中") {
-                CheckRow("MASK SEGMENTATION 封面智能分割（预览）", checked = false, enabled = false) {}
-                CheckRow("DOF SIMULATION 景深模拟（规划）", checked = false, enabled = false) {}
+            FxCard(title = stringResource(R.string.coming_soon)) {
+                CheckRow(stringResource(R.string.mask_segmentation), checked = false, enabled = false) {}
+                CheckRow(stringResource(R.string.dof_simulation), checked = false, enabled = false) {}
             }
 
             Text(
-                text = "实验性功能默认关闭，开启后请留意耗电与稳定性。",
+                text = stringResource(R.string.experimental_note),
                 color = FlowColors.TextTertiary,
                 style = MaterialTheme.typography.bodySmall
             )

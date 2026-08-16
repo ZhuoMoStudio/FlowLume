@@ -25,6 +25,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -32,6 +34,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.zhuomo.flowlume.app.R
 import com.zhuomo.flowlume.app.di.AppContainer
 import com.zhuomo.flowlume.app.ui.screens.AboutScreen
 import com.zhuomo.flowlume.app.ui.screens.ExperimentalScreen
@@ -55,11 +58,11 @@ fun AppNavHost() {
     val fullscreenMode = AppContainer.uiMode.collectAsState().value == Mode.FULLSCREEN
 
     val tabs = buildList {
-        add(Tab("home", "HOME", Icons.Outlined.Home))
-        add(Tab("render", "RENDER", Icons.Outlined.Tune))
-        add(Tab("fx", "FX", Icons.Outlined.AutoAwesome))
-        if (fullscreenMode) add(Tab("timer", "TIMER", Icons.Outlined.Timer))
-        add(Tab("settings", "SETTINGS", Icons.Outlined.Settings))
+        add(Tab("home", stringResource(R.string.tab_home), Icons.Outlined.Home))
+        add(Tab("render", stringResource(R.string.tab_render), Icons.Outlined.Tune))
+        add(Tab("fx", stringResource(R.string.tab_fx), Icons.Outlined.AutoAwesome))
+        if (fullscreenMode) add(Tab("timer", stringResource(R.string.tab_timer), Icons.Outlined.Timer))
+        add(Tab("settings", stringResource(R.string.tab_settings), Icons.Outlined.Settings))
     }
     val showBottomBar = currentRoute in tabs.map { it.route }
 

@@ -10,7 +10,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
-private val Context.dataStore by preferencesDataStore(name = "flowlume_config")
+// 公开以便 app 模块复用同一 DataStore 实例（语言设置等）
+val Context.dataStore by preferencesDataStore(name = "flowlume_config")
 
 /**
  * 双形态配置存储：桌面壁纸 / App 全屏 各一套参数，隔离保存，一键互拷。

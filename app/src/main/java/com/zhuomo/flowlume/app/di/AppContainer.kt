@@ -6,6 +6,8 @@ import com.zhuomo.flowlume.config.ConfigStore
 import com.zhuomo.flowlume.config.Mode
 import com.zhuomo.flowlume.config.ReloadBus
 import com.zhuomo.flowlume.config.TimerConfig
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.zhuomo.flowlume.effects.FlowLumeEffects
 import com.zhuomo.flowlume.media.ListenerHealthCheck
 import com.zhuomo.flowlume.timer.TimerEngine
@@ -13,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 /** 简易依赖容器（骨架阶段，后续可迁移 Hilt） */
@@ -31,6 +34,9 @@ object AppContainer {
 
     /** 计时器配置内存快照（全屏渲染线程读取） */
     @Volatile var timerConfig: TimerConfig = TimerConfig()
+
+    /** 应用内语言（system / zh / en），由 DataStore 持久化 */
+    @Volatile var appLang: String = "system"
 
     /** 主题：false=纯黑深色 / true=灰黑深色 */
     val charcoalTheme = MutableStateFlow(false)
@@ -63,6 +69,19 @@ object AppContainer {
             launch {
                 ConfigStore.timerFlow(appContext).collect { timerConfig = it }
             }
+            launch {
+                langFlow(appContext).collect { appLang = it }
+            }
         }
+    }
+
+    private val KEY_LANG = stringPreferencesKey("app_lang")
+
+    fun langFlow(context: Context) =
+        context.dataStore.data.map { prefs -> prefs[KEY_LANG] ?: "system" }
+
+    suspend fun setLang(context: Context, lang: String) {
+        appLang = lang
+        context.dataStore.edit { prefs -> prefs[KEY_LANG] = lang }
     }
 }

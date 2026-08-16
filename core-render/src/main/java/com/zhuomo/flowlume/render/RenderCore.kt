@@ -47,6 +47,7 @@ class RenderCore(
 
     private var config: RenderConfig = ConfigStore.current(mode)
     private var artTexture: Texture = fallbackTexture()
+    private var fallbackMode = false
 
     // ── 跨线程投递（宿主写入，GL 线程消费）──
     @Volatile var pendingArt: Bitmap? = null
@@ -54,24 +55,36 @@ class RenderCore(
     @Volatile var latestFrameData: FrameData = FrameData.EMPTY
 
     fun create() {
-        fluidShader = ShaderLibrary.get("fluid", ShaderSources.BASE_VERTEX, FLUID_FRAG)
-        kawaseShader = ShaderLibrary.get("kawase", ShaderSources.BASE_VERTEX, KAWASE_FRAG)
-        compositeShader = ShaderLibrary.get("composite", ShaderSources.BASE_VERTEX, COMPOSITE_FRAG)
-        finalShader = ShaderLibrary.get("final", ShaderSources.BASE_VERTEX, FINAL_FRAG)
-        particleShader = ShaderLibrary.get("particle", PARTICLE_VERT, PARTICLE_FRAG)
-        quad = FullscreenQuad()
-        fbo = FboPipeline()
-        fbo.resize(width, height, blurLevels())
+        try {
+            fluidShader = ShaderLibrary.get("fluid", ShaderSources.BASE_VERTEX, FLUID_FRAG)
+            kawaseShader = ShaderLibrary.get("kawase", ShaderSources.BASE_VERTEX, KAWASE_FRAG)
+            compositeShader = ShaderLibrary.get("composite", ShaderSources.BASE_VERTEX, COMPOSITE_FRAG)
+            finalShader = ShaderLibrary.get("final", ShaderSources.BASE_VERTEX, FINAL_FRAG)
+            particleShader = ShaderLibrary.get("particle", PARTICLE_VERT, PARTICLE_FRAG)
+            quad = FullscreenQuad()
+            fbo = FboPipeline()
+            fbo.resize(width, height, blurLevels())
+        } catch (e: Throwable) {
+            // 个别 GPU/ROM 着色器兼容问题：降级为纯色渲染，保证壁纸/全屏不黑屏不崩溃
+            Gdx.app.error(TAG, "render init failed, entering fallback mode", e)
+            fallbackMode = true
+        }
     }
 
     fun resize(w: Int, h: Int) {
         width = w.coerceAtLeast(1)
         height = h.coerceAtLeast(1)
-        fbo.resize(width, height, blurLevels())
+        if (!fallbackMode) {
+            runCatching { fbo.resize(width, height, blurLevels()) }
+        }
     }
 
     /** 渲染一帧（宿主 GL 线程调用） */
     fun render(delta: Float) {
+        if (fallbackMode) {
+            clear()
+            return
+        }
         time += delta
 
         pendingConfig?.let { cfg ->
@@ -205,9 +218,13 @@ class RenderCore(
 
     override fun dispose() {
         artTexture.dispose()
+        if (::quad.isInitialized) quad.dispose()
+        if (::fbo.isInitialized) fbo.dispose()
         particleBatch.dispose()
-        quad.dispose()
-        fbo.dispose()
+    }
+
+    companion object {
+        private const val TAG = "RenderCore"
     }
 }
 

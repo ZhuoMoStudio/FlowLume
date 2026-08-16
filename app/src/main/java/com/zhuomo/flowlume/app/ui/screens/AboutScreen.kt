@@ -2,7 +2,6 @@ package com.zhuomo.flowlume.app.ui.screens
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,20 +19,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.zhuomo.flowlume.app.BuildConfig
+import com.zhuomo.flowlume.app.R
 import com.zhuomo.flowlume.app.ui.SubPageScaffold
 import com.zhuomo.flowlume.ui.FlowColors
 import com.zhuomo.flowlume.ui.FxCard
-import com.zhuomo.flowlume.ui.PrimaryButton
 
 /** 页面7 · 关于页面 */
 @Composable
 fun AboutScreen(navController: NavHostController) {
     val context = LocalContext.current
-    SubPageScaffold(title = "ABOUT 关于", navController = navController) {
+    SubPageScaffold(title = stringResource(R.string.about), navController = navController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -46,29 +46,34 @@ fun AboutScreen(navController: NavHostController) {
             Spacer(Modifier.height(16.dp))
             Text("FLOWLUME", style = MaterialTheme.typography.titleLarge, fontSize = 30.sp, color = FlowColors.TextPrimary)
             Text(
-                text = "Version ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})\nAndroid ${Build.VERSION.RELEASE}",
+                text = "Version ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                 style = MaterialTheme.typography.bodySmall,
                 color = FlowColors.TextTertiary
             )
 
-            FxCard(title = "LINKS 链接") {
-                LinkRow("FEEDBACK 反馈问题") {
+            FxCard(title = stringResource(R.string.links)) {
+                LinkRow(stringResource(R.string.feedback)) {
                     runCatching {
-                        context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).putExtra(Intent.EXTRA_SUBJECT, "FlowLume Feedback"))
+                        context.startActivity(
+                            Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
+                                .putExtra(Intent.EXTRA_SUBJECT, "FlowLume Feedback")
+                        )
                     }
                 }
-                LinkRow("OTHER WORKS 其他作品") {
+                LinkRow(stringResource(R.string.other_works)) {
                     runCatching {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ZhuoMoStudio")))
+                        context.startActivity(
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ZhuoMoStudio"))
+                        )
                     }
                 }
             }
 
-            FxCard(title = "CREDITS 致谢") {
-                CreditLine("图形算法", "Intel Kawase Blur · Inigo Quilez Domain Wrapping")
-                CreditLine("开源库", "LibGDX (BadlogicGames) · gdx-freetype · Jetpack · Kotlinx")
-                CreditLine("音频可视化参考", "AudioViz · Droid-vizu · wave.js")
-                CreditLine("图标", "自绘 SVG 矢量图标集")
+            FxCard(title = stringResource(R.string.credits)) {
+                CreditLine(stringResource(R.string.credits_algo), stringResource(R.string.credits_algo_v))
+                CreditLine(stringResource(R.string.credits_lib), stringResource(R.string.credits_lib_v))
+                CreditLine(stringResource(R.string.credits_ref), stringResource(R.string.credits_ref_v))
+                CreditLine(stringResource(R.string.credits_icon), stringResource(R.string.credits_icon_v))
             }
 
             Text(

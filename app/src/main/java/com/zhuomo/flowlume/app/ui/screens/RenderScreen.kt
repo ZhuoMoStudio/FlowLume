@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,7 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.zhuomo.flowlume.app.R
 import com.zhuomo.flowlume.app.di.AppContainer
 import com.zhuomo.flowlume.app.ui.useRenderConfig
 import com.zhuomo.flowlume.config.ConfigStore
@@ -39,6 +41,7 @@ import com.zhuomo.flowlume.ui.CheckRow
 import com.zhuomo.flowlume.ui.ConfirmDialog
 import com.zhuomo.flowlume.ui.FlowColors
 import com.zhuomo.flowlume.ui.FxCard
+import com.zhuomo.flowlume.ui.PrimaryButton
 import com.zhuomo.flowlume.ui.RadioRow
 import com.zhuomo.flowlume.ui.SectionLabel
 import com.zhuomo.flowlume.ui.SliderRow
@@ -67,44 +70,46 @@ fun RenderScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = if (mode == Mode.WALLPAPER) "EDITING: DESKTOP WALLPAPER 配置" else "EDITING: APP FULLSCREEN 配置",
+            text = stringResource(
+                if (mode == Mode.WALLPAPER) R.string.editing_wallpaper else R.string.editing_fullscreen
+            ),
             color = FlowColors.Accent,
-            style = androidx.compose.material3.MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium
         )
 
         // 流体设定
-        FxCard(title = "FLUID 流体设定") {
-            SliderRow("FLUID SCALE 流体缩放", config.fluidScale, valueRange = 0.5f..3f, steps = 24) {
+        FxCard(title = stringResource(R.string.fluid_card)) {
+            SliderRow(stringResource(R.string.fluid_scale), config.fluidScale, valueRange = 0.5f..3f, steps = 24) {
                 update(config.copy(fluidScale = it))
             }
-            SliderRow("FLOW SPEED 流动速度", config.flowSpeed, valueRange = 0f..2f, steps = 19) {
+            SliderRow(stringResource(R.string.flow_speed), config.flowSpeed, valueRange = 0f..2f, steps = 19) {
                 update(config.copy(flowSpeed = it))
             }
-            SliderRow("TURBULENCE 扰动强度", config.turbulence, valueRange = 0f..2f, steps = 19) {
+            SliderRow(stringResource(R.string.turbulence), config.turbulence, valueRange = 0f..2f, steps = 19) {
                 update(config.copy(turbulence = it))
             }
         }
 
         // 图形设定
-        FxCard(title = "GRAPHICS 图形设定") {
-            RadioRow("BLUR 基础模糊", config.renderMode == RenderMode.BLUR) {
+        FxCard(title = stringResource(R.string.graphics_card)) {
+            RadioRow(stringResource(R.string.mode_blur), config.renderMode == RenderMode.BLUR) {
                 update(config.copy(renderMode = RenderMode.BLUR))
             }
-            RadioRow("FLUTED GLASS 波纹玻璃折射", config.renderMode == RenderMode.FLUTED_GLASS) {
+            RadioRow(stringResource(R.string.mode_glass), config.renderMode == RenderMode.FLUTED_GLASS) {
                 update(config.copy(renderMode = RenderMode.FLUTED_GLASS))
             }
         }
 
         // 专辑封面配置
-        FxCard(title = "ALBUM ART 专辑封面") {
-            CheckRow("重启应用保留上次封面", checked = config.restoreArtOnReboot) {
+        FxCard(title = stringResource(R.string.album_card)) {
+            CheckRow(stringResource(R.string.restore_art), checked = config.restoreArtOnReboot) {
                 update(config.copy(restoreArtOnReboot = it))
             }
-            CheckRow("音乐暂停保留上次封面", checked = config.keepArtOnPause) {
+            CheckRow(stringResource(R.string.keep_art_pause), checked = config.keepArtOnPause) {
                 update(config.copy(keepArtOnPause = it))
             }
             Spacer(Modifier.height(8.dp))
-            SectionLabel("DEFAULT TONE 默认色调（无音乐时）")
+            SectionLabel(stringResource(R.string.default_tone))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 TONES.forEach { tone ->
                     val selected = config.defaultTone == tone
@@ -130,25 +135,24 @@ fun RenderScreen() {
         }
 
         // 全局画面调节
-        FxCard(title = "GLOBAL ADJUST 全局画面调节") {
-            SliderRow("BRIGHTNESS 亮度", config.brightness, valueRange = 0.5f..1.5f, steps = 9) {
+        FxCard(title = stringResource(R.string.global_adjust)) {
+            SliderRow(stringResource(R.string.brightness), config.brightness, valueRange = 0.5f..1.5f, steps = 9) {
                 update(config.copy(brightness = it))
             }
-            SliderRow("SATURATION 色彩饱和度", config.saturation, valueRange = 0f..2f, steps = 19) {
+            SliderRow(stringResource(R.string.saturation), config.saturation, valueRange = 0f..2f, steps = 19) {
                 update(config.copy(saturation = it))
             }
         }
 
         // 配置互拷
-        FxCard(title = "SYNC 配置互拷") {
-            val target = if (mode == Mode.WALLPAPER) Mode.FULLSCREEN else Mode.WALLPAPER
-            androidx.compose.material3.Text(
-                text = if (target == Mode.FULLSCREEN) "复制当前配置到全屏模式" else "复制当前配置到桌面壁纸",
-                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+        FxCard(title = stringResource(R.string.sync_card)) {
+            Text(
+                text = stringResource(R.string.copy_to_target),
+                style = MaterialTheme.typography.bodyMedium,
                 color = FlowColors.TextPrimary
             )
             Spacer(Modifier.height(8.dp))
-            com.zhuomo.flowlume.ui.PrimaryButton(text = "COPY CONFIG 一键复制") {
+            PrimaryButton(text = stringResource(R.string.copy_config)) {
                 showCopyDialog = true
             }
         }
@@ -157,9 +161,9 @@ fun RenderScreen() {
     if (showCopyDialog) {
         val target = if (mode == Mode.WALLPAPER) Mode.FULLSCREEN else Mode.WALLPAPER
         ConfirmDialog(
-            title = "OVERWRITE TARGET CONFIG?",
-            message = "将用当前配置覆盖 ${target.name} 形态的全部参数，确定？",
-            confirmText = "OVERWRITE",
+            title = stringResource(R.string.overwrite_title),
+            message = stringResource(R.string.overwrite_msg),
+            confirmText = stringResource(R.string.overwrite),
             onConfirm = {
                 showCopyDialog = false
                 scope.launch { ConfigStore.copy(context, mode, target) }
