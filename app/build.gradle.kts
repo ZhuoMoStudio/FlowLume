@@ -76,6 +76,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.gdx)
     implementation(libs.gdx.backend.android)
+    implementation(libs.gdx.freetype)
     implementation(libs.kotlinx.coroutines.android)
 }
