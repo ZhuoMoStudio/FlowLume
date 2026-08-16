@@ -6,10 +6,9 @@ import android.opengl.EGLConfig
 import android.opengl.EGLExt
 import android.view.Surface
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.backends.android.AndroidApplicationLogger
-import com.badlogic.gdx.backends.android.AndroidFiles
 import com.badlogic.gdx.backends.android.AndroidGL20
 import com.badlogic.gdx.backends.android.AndroidGL30
+import com.badlogic.gdx.backends.android.DefaultAndroidFiles
 import com.zhuomo.flowlume.render.RenderCore
 
 /**
@@ -62,9 +61,9 @@ class GdxWallpaper(
             EGL14.EGL_GREEN_SIZE, 8,
             EGL14.EGL_BLUE_SIZE, 8,
             EGL14.EGL_ALPHA_SIZE, 0,
-            EGL14.EGL_RENDERABLE_TYPE, EGLExt.EGL_OPENGL_ES2_BIT,
+            EGL14.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
             EGL14.EGL_SURFACE_TYPE, EGL14.EGL_WINDOW_BIT,
-            EGL14.EGL_RECORDABLE_ANDROID, 1,
+            EGLExt.EGL_RECORDABLE_ANDROID, 1,
             EGL14.EGL_NONE
         )
         if (!EGL14.eglChooseConfig(display, attribs, 0, configs, 0, 1, numConfigs, 0) || numConfigs[0] <= 0) {
@@ -114,7 +113,7 @@ class GdxWallpaper(
         Gdx.gl20 = AndroidGL20()
         Gdx.gl = Gdx.gl20
         Gdx.gl30 = AndroidGL30()
-        Gdx.app = AndroidApplicationLogger()
-        Gdx.files = AndroidFiles(context)
+        Gdx.app = WallpaperApplication()
+        Gdx.files = DefaultAndroidFiles(context)
     }
 }
