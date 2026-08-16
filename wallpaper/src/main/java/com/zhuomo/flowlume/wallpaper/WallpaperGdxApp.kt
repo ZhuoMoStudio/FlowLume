@@ -88,6 +88,9 @@ class WallpaperGdxApp : ApplicationListener, AndroidWallpaperListener {
         Log.i(TAG, "previewStateChange isPreview=$isPreview")
     }
 
+    /** 用户向壁纸图标区拖放内容（Android 10+，可忽略） */
+    override fun iconDropped(x: Int, y: Int) = Unit
+
     companion object {
         private const val TAG = "FlowLumeWallpaper"
     }
