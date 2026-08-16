@@ -1,0 +1,32 @@
+# ─── 安全：隐私与凭据（严禁提交） ───
+*.jks
+*.keystore
+keystore/
+KEYSTORE_BACKUP.txt
+.env
+local.properties
+*.p12
+*.key
+secrets*
+
+# ─── 构建产物（云端 Actions 构建，本地不打包） ───
+*.apk
+*.aab
+*.ipa
+build/
+.gradle/
+app/build/
+captures/
+.cxx/
+
+# ─── IDE / 系统 ───
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# ─── 日志与临时 ───
+*.log
+logs/
+tmp/
+*.tmp
