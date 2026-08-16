@@ -12,7 +12,7 @@ object PresetStore {
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true; prettyPrint = true }
 
     fun officialPresets(context: Context): List<Preset> =
-        context.assets.list("presets")?.orEmpty()
+        (context.assets.list("presets") ?: emptyArray())
             .mapNotNull { file ->
                 runCatching {
                     json.decodeFromString<Preset>(context.assets.open("presets/$file").bufferedReader().use { it.readText() })
@@ -20,7 +20,7 @@ object PresetStore {
             }
 
     suspend fun customPresets(context: Context): List<Preset> = withContext(Dispatchers.IO) {
-        dir(context).listFiles()?.orEmpty()
+        (dir(context).listFiles() ?: emptyArray())
             .mapNotNull { f -> runCatching { json.decodeFromString<Preset>(f.readText()) }.getOrNull() }
             .sortedBy { it.name }
     }
