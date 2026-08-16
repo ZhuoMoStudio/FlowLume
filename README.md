@@ -66,6 +66,16 @@ docs/
 - 签名密钥仅经 GitHub Secrets 注入，**仓库内严禁提交任何 `.jks` / 密码 / token / `.env`**；
 - 已配置 `.gitignore` 强制排除全部敏感文件。
 
+## 📄 开源协议
+
+本项目基于 **Apache License 2.0** 开源（详见 [LICENSE](./LICENSE)）。
+宽松许可、商业友好，与 LibGDX / AndroidX 生态一致；允许闭源商用，需保留版权声明。
+
+## 🌍 多语言
+
+- 默认跟随系统语言（中文 / English），设置页可手动切换；
+- 文案全部位于 `app/src/main/res/values*/strings.xml`，欢迎通过 PR 补充其他语言。
+
 ## 📌 Roadmap
 
 - [ ] Android 工程脚手架 + 双形态渲染骨架

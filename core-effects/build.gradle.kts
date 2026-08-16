@@ -14,7 +14,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions { jvmTarget = "17" }
 }
 
 dependencies {
@@ -23,4 +22,10 @@ dependencies {
     implementation(project(":core-render"))
     // ParticleBatch 超类型 Disposable 来自 gdx
     implementation(libs.gdx)
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
 }

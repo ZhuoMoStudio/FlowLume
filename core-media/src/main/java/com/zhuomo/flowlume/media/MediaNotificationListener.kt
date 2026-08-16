@@ -5,6 +5,8 @@ import android.graphics.Bitmap
 import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSessionManager
+import android.os.Build
+import android.os.Bundle
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
@@ -56,7 +58,7 @@ class MediaNotificationListener : NotificationListenerService() {
         val extras = notif.extras
         // ① 优先：MediaSession Token → MediaController 完整元数据（含大图封面）
         val sessionToken: android.media.session.MediaSession.Token? =
-            extras.getParcelable(Notification.EXTRA_MEDIA_SESSION)
+            extras.parcelableCompat(Notification.EXTRA_MEDIA_SESSION)
         if (sessionToken != null) {
             val controller = MediaController(this, sessionToken)
             val meta = controller.metadata ?: return
@@ -75,8 +77,8 @@ class MediaNotificationListener : NotificationListenerService() {
             return
         }
         // ② 兜底：直接读 extras 中的 artwork
-        val art: Bitmap? = extras.getParcelable(Notification.EXTRA_PICTURE)
-            ?: (extras.getParcelable(Notification.EXTRA_LARGE_ICON) as? Bitmap)
+        val art: Bitmap? = extras.parcelableCompat(Notification.EXTRA_PICTURE)
+            ?: extras.parcelableCompat<Bitmap>(Notification.EXTRA_LARGE_ICON)
         if (art != null) {
             ArtBus.emit(ArtEvent(artwork = art.scaleDown(512), isPlaying = true))
         }
@@ -97,3 +99,12 @@ class MediaNotificationListener : NotificationListenerService() {
         private const val TAG = "FlowLumeNLS"
     }
 }
+
+/** getParcelable 跨版本兼容：API 33+ 用类型安全重载，旧版本用弃用 API */
+@Suppress("DEPRECATION")
+private inline fun <reified T : android.os.Parcelable> Bundle.parcelableCompat(key: String): T? =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getParcelable(key, T::class.java)
+    } else {
+        getParcelable(key)
+    }

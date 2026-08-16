@@ -3,6 +3,7 @@ package com.zhuomo.flowlume.audio
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioManager
+import android.media.AudioPlaybackConfiguration
 import android.media.audiofx.Visualizer
 import android.util.Log
 
@@ -71,9 +72,9 @@ class VisualizerCapture(private val context: Context) {
         val am = context.getSystemService(AudioManager::class.java)
         return runCatching {
             am.activePlaybackConfigurations
-                .firstOrNull {
-                    it.isActive &&
-                        it.audioAttributes.usage in listOf(
+                .firstOrNull { cfg: AudioPlaybackConfiguration ->
+                    cfg.activeState == AudioPlaybackConfiguration.ACTIVE_STATE_ACTIVE &&
+                        cfg.audioAttributes.usage in listOf(
                             AudioAttributes.USAGE_MEDIA,
                             AudioAttributes.USAGE_GAME
                         )

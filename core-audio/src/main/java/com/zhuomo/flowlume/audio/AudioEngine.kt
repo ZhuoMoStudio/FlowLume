@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 import kotlin.math.sqrt
 
 /**
@@ -107,9 +106,5 @@ class AudioEngine(
             bands[b] = (s / (end - start).coerceAtLeast(1)).coerceIn(0f, 1f) / 64f
         }
         return bands
-    }
-
-    companion object {
-        private val ABS_0 = abs(0f)
     }
 }
