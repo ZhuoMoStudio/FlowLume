@@ -84,8 +84,7 @@ class MediaNotificationListener : NotificationListenerService() {
 
     private fun isMediaNotification(n: Notification): Boolean =
         n.category == Notification.CATEGORY_TRANSPORT ||
-            n.extras.containsKey(Notification.EXTRA_MEDIA_SESSION) ||
-            n.extras.containsKey(Notification.EXTRA_MEDIA_SESSION2)
+            n.extras.containsKey(Notification.EXTRA_MEDIA_SESSION)
 
     private fun Bitmap.scaleDown(maxEdge: Int): Bitmap {
         val w = width; val h = height

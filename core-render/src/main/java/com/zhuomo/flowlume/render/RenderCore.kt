@@ -54,10 +54,10 @@ class RenderCore(
     @Volatile var latestFrameData: FrameData = FrameData.EMPTY
 
     fun create() {
-        fluidShader = ShaderLibrary.get("fluid", ShaderSources.VERT, Shaders.FLUID_FRAG)
-        kawaseShader = ShaderLibrary.get("kawase", ShaderSources.VERT, Shaders.KAWASE_FRAG)
-        compositeShader = ShaderLibrary.get("composite", ShaderSources.VERT, Shaders.COMPOSITE_FRAG)
-        finalShader = ShaderLibrary.get("final", ShaderSources.VERT, Shaders.FINAL_FRAG)
+        fluidShader = ShaderLibrary.get("fluid", ShaderSources.BASE_VERTEX, Shaders.FLUID_FRAG)
+        kawaseShader = ShaderLibrary.get("kawase", ShaderSources.BASE_VERTEX, Shaders.KAWASE_FRAG)
+        compositeShader = ShaderLibrary.get("composite", ShaderSources.BASE_VERTEX, Shaders.COMPOSITE_FRAG)
+        finalShader = ShaderLibrary.get("final", ShaderSources.BASE_VERTEX, Shaders.FINAL_FRAG)
         particleShader = ShaderLibrary.get("particle", Shaders.PARTICLE_VERT, Shaders.PARTICLE_FRAG)
         quad = FullscreenQuad()
         fbo = FboPipeline()
