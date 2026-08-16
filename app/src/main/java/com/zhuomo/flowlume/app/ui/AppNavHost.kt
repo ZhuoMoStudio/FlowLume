@@ -117,9 +117,9 @@ fun AppNavHost() {
             composable("fx") { FxScreen() }
             composable("timer") { TimerScreen(navController) }
             composable("settings") { SettingsScreen(navController) }
-            composable("experimental") { ExperimentalScreen() }
-            composable("about") { AboutScreen() }
-            composable("help") { HelpScreen() }
+            composable("experimental") { ExperimentalScreen(navController) }
+            composable("about") { AboutScreen(navController) }
+            composable("help") { HelpScreen(navController) }
         }
     }
 }

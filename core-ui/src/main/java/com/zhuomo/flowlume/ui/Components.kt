@@ -85,9 +85,9 @@ fun SectionLabel(text: String, modifier: Modifier = Modifier) {
 @Composable
 fun PrimaryButton(
     text: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    onClick: () -> Unit
 ) {
     Surface(
         modifier = modifier
@@ -113,9 +113,9 @@ fun PrimaryButton(
 @Composable
 fun SecondaryButton(
     text: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    onClick: () -> Unit
 ) {
     Surface(
         modifier = modifier
@@ -211,9 +211,9 @@ fun RadioRow(
 fun SliderRow(
     label: String,
     value: Float,
-    onValueChange: (Float) -> Unit,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
-    steps: Int = 0
+    steps: Int = 0,
+    onValueChange: (Float) -> Unit
 ) {
     Column(Modifier.fillMaxWidth()) {
         Row(
@@ -247,8 +247,8 @@ fun SliderRow(
 fun SwitchRow(
     title: String,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCheckedChange: (Boolean) -> Unit
 ) {
     Row(
         modifier = modifier.fillMaxWidth().padding(vertical = 6.dp),
@@ -274,8 +274,8 @@ fun SwitchRow(
 fun SegmentedControl(
     options: List<String>,
     selectedIndex: Int,
-    onSelect: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSelect: (Int) -> Unit
 ) {
     Row(
         modifier = modifier
