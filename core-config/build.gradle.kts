@@ -21,8 +21,9 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    // DataStore 1.0.x（纯 Android 构件，preferencesKey 同构件提供）
+    // DataStore 1.0.x：delegate 在 datastore-preferences，Preferences/Key 在 -core（JAR 构件）
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.android)
 }

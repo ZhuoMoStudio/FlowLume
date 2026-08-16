@@ -1,8 +1,9 @@
 package com.zhuomo.flowlume.config
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -18,10 +19,10 @@ private val Context.dataStore by preferencesDataStore(name = "flowlume_config")
 object ConfigStore {
 
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
-    private val KEY_WALLPAPER = preferencesKey<String>("wallpaper")
-    private val KEY_FULLSCREEN = preferencesKey<String>("fullscreen")
-    private val KEY_TIMER = preferencesKey<String>("timer")
-    private val KEY_SEPARATE = preferencesKey<Boolean>("separate_configs")
+    private val KEY_WALLPAPER = stringPreferencesKey("wallpaper")
+    private val KEY_FULLSCREEN = stringPreferencesKey("fullscreen")
+    private val KEY_TIMER = stringPreferencesKey("timer")
+    private val KEY_SEPARATE = booleanPreferencesKey("separate_configs")
 
     // 渲染线程读取的内存快照（由 App 启动时收集 DataStore 更新）
     @Volatile var wallpaperSnapshot: RenderConfig = RenderConfig()
