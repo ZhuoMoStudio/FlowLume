@@ -32,9 +32,13 @@ android {
         release {
             isMinifyEnabled = false // 骨架阶段暂不混淆；后续开启并补充 proguard 规则
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = if (providers.gradleProperty("KEYSTORE_FILE").isPresent) {
+            // 仅当 CI 传入的 keystore 文件真实存在时启用签名（避免未签名时构建失败）
+            val keyFile = providers.gradleProperty("KEYSTORE_FILE").orNull
+            signingConfig = if (keyFile != null && file(keyFile).exists()) {
                 signingConfigs.getByName("release")
-            } else null
+            } else {
+                null
+            }
         }
     }
 

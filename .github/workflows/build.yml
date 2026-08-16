@@ -1,11 +1,5 @@
 name: Build & Release
 
-# 云端打包（本地不打包）：
-# - push 到 main / 手动触发时构建签名 Release APK
-# - 自动发布到 GitHub Releases（tag 格式 v<versionName>）
-# - 签名凭据来自 GitHub Secrets：KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS / KEYSTORE_KEY_PASSWORD
-# - 未配置 Secrets 时产出未签名 APK（fallback）
-
 on:
   push:
     branches: [main]
@@ -17,7 +11,7 @@ concurrency:
 
 jobs:
   build-release:
-    name: Release APK (signed)
+    name: Release APK
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,30 +25,29 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Decode release keystore from Secrets
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+      - name: Decode release keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/flowlume-release.jks"
-          echo "keystore decoded: $(wc -c < "$RUNNER_TEMP/flowlume-release.jks") bytes"
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/flowlume-release.jks"
+            echo "keystore decoded: $(wc -c < "$RUNNER_TEMP/flowlume-release.jks") bytes"
+          else
+            echo "::warning::KEYSTORE_BASE64 not configured — release APK will be UNSIGNED"
+          fi
 
-      - name: Assemble release (signed)
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+      - name: Assemble release
         env:
+          KEYSTORE_FILE: ${{ runner.temp }}/flowlume-release.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
         run: |
           ./gradlew :app:assembleRelease --no-daemon \
-            -PKEYSTORE_FILE="$RUNNER_TEMP/flowlume-release.jks" \
+            -PKEYSTORE_FILE="$KEYSTORE_FILE" \
             -PKEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" \
             -PKEY_ALIAS="$KEY_ALIAS" \
             -PKEYSTORE_KEY_PASSWORD="$KEYSTORE_KEY_PASSWORD"
-
-      - name: Assemble release (unsigned fallback)
-        if: ${{ secrets.KEYSTORE_BASE64 == '' }}
-        run: ./gradlew :app:assembleRelease --no-daemon
 
       - name: Resolve version
         id: ver
