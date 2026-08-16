@@ -6,6 +6,7 @@ import com.zhuomo.flowlume.config.ConfigStore
 import com.zhuomo.flowlume.config.Mode
 import com.zhuomo.flowlume.config.ReloadBus
 import com.zhuomo.flowlume.config.TimerConfig
+import com.zhuomo.flowlume.config.dataStore
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.zhuomo.flowlume.effects.FlowLumeEffects
