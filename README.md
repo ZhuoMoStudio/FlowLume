@@ -38,9 +38,27 @@ docs/
     └── 09-issues.md              故障处理方案
 ```
 
-## 🛠 技术栈
+## 🧱 Android 工程结构（9 模块）
 
-Kotlin · LibGDX 1.12 · GLSL ES 3.00 · Jetpack DataStore · WorkManager · Kotlinx Coroutines/Serialization · TFLite（规划）
+| 模块 | 职责 |
+|------|------|
+| `:app` | MainActivity（8 页面 Compose UI）+ FullscreenActivity（全屏渲染 + 计时器浮层） |
+| `:wallpaper` | 形态一：LiveWallpaperService + 手工 EGL 上下文渲染线程 |
+| `:core-render` | LibGDX 渲染核心：RenderCore / FBO 管线 / Kawase 金字塔 / ShaderLibrary |
+| `:core-effects` | 组件化动效系统：17 项动效 + 注册表 + 性能策略 |
+| `:core-audio` | AudioPlaybackCapture（不读麦克风）+ FFT + 节拍检测 |
+| `:core-media` | NotificationListenerService 封面提取 + 保活自检 |
+| `:core-timer` | 正计时 / 倒计时 / 番茄工作计时器引擎 |
+| `:core-config` | DataStore 双形态配置隔离 + 预设系统 |
+| `:core-ui` | Compose 设计系统（SVG 图标 / 控件 / 主题 Tokens） |
+
+技术栈：Kotlin 2.0 · AGP 8.7 · LibGDX 1.12 · GLSL ES 1.00 · Jetpack Compose · DataStore · WorkManager · Gradle 8.10
+
+## 🔧 云端打包（GitHub Actions）
+
+- 推送 `main` 自动触发 `build-debug`（debug APK 产物）；`build-release` 在 Secrets 配置齐全后自动签名构建；
+- 签名 Secrets 四项：`KEYSTORE_BASE64` / `KEYSTORE_PASSWORD` / `KEY_ALIAS` / `KEYSTORE_KEY_PASSWORD`；
+- 本地不打包、不产出 APK，仓库内零密钥文件（详见 `.gitignore`）。
 
 ## 🔒 安全约定
 

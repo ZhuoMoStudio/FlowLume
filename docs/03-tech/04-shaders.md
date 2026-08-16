@@ -1,6 +1,7 @@
 # 技术文档 04 · Kawase Blur + Domain Wrapping 流体扰动 GLSL 方案
 
-> 参考：Intel 开源 Kawase 双 Pass 模糊；Inigo Quilez（iq）Domain Wrapping 无缝平铺思想。全部 Shader 为 GLSL ES 3.00（Android GLES3）。
+> 参考：Intel 开源 Kawase 双 Pass 模糊；Inigo Quilez（iq）Domain Wrapping 无缝平铺思想。
+> 工程实现（`core-render/Shaders.kt`）为最大兼容性采用 **GLSL ES 1.00**（GLES2/GLES3 均可用）；本文件给出等价 **GLSL ES 3.00** 参考实现，两者算法一致。
 
 ## 1. 渲染管线总览（每帧）
 

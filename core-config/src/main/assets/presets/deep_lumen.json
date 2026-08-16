@@ -1,0 +1,24 @@
+{
+  "name": "DEEP LUMEN 深海弥光",
+  "official": true,
+  "render": { "renderMode": "BLUR", "fluidScale": 1.0, "flowSpeed": 0.8, "turbulence": 0.9, "brightness": 0.95, "saturation": 1.1 },
+  "effects": [
+    { "id": "fx.turbulence", "enabled": true, "intensity": 0.8, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.bg_pan", "enabled": false, "intensity": 0.5, "speed": 0.6, "size": 0.5 },
+    { "id": "fx.micro_rotation", "enabled": false, "intensity": 0.4, "speed": 0.5, "size": 0.5 },
+    { "id": "fx.color_drift", "enabled": true, "intensity": 0.6, "speed": 0.6, "size": 0.5 },
+    { "id": "fx.global_glow", "enabled": true, "intensity": 0.7, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.ripple_spread", "enabled": true, "intensity": 0.5, "speed": 0.9, "size": 0.7 },
+    { "id": "fx.wave_sweep", "enabled": false, "intensity": 0.5, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.beat_pulse", "enabled": true, "intensity": 0.6, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.edge_flicker", "enabled": false, "intensity": 0.5, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.art_breathing", "enabled": true, "intensity": 0.5, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.spectrum_radial", "enabled": false, "intensity": 0.5, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.floating_motes", "enabled": true, "intensity": 0.5, "speed": 0.8, "size": 0.4 },
+    { "id": "fx.bokeh_blobs", "enabled": false, "intensity": 0.5, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.gradient_ribbons", "enabled": false, "intensity": 0.5, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.radial_halo", "enabled": true, "intensity": 0.6, "speed": 1.0, "size": 0.6 },
+    { "id": "fx.corner_glow", "enabled": false, "intensity": 0.5, "speed": 1.0, "size": 0.5 },
+    { "id": "fx.star_drift", "enabled": true, "intensity": 0.4, "speed": 0.5, "size": 0.4 }
+  ]
+}

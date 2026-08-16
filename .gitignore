@@ -15,9 +15,11 @@ secrets*
 *.ipa
 build/
 .gradle/
+.kotlin/
 app/build/
 captures/
 .cxx/
+*.hprof
 
 # ─── IDE / 系统 ───
 .idea/
