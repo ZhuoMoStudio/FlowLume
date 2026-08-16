@@ -112,7 +112,7 @@ fun RenderScreen() {
                         modifier = Modifier
                             .size(30.dp)
                             .clip(RoundedCornerShape(8.dp))
-                            .background(Color(tone.toInt()))
+                            .background(Color(tone))
                             .clickable { update(config.copy(defaultTone = tone)) }
                             .padding(2.dp)
                     ) {

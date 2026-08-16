@@ -7,6 +7,7 @@ plugins {
 android {
     namespace = "com.zhuomo.flowlume.ui"
     compileSdk = 35
+    buildToolsVersion = "35.0.0"
 
     defaultConfig { minSdk = 29 }
 
