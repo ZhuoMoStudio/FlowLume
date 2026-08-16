@@ -22,6 +22,8 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.datastore.preferences)
+    // DataStore 1.1.x：preferencesKey/Preferences 位于 -core 构件（POM 中为 runtime scope，需显式声明）
+    implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.android)
 }
