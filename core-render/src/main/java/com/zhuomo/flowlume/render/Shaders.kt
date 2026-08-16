@@ -1,3 +1,5 @@
+@file:JvmName("Shaders")
+
 package com.zhuomo.flowlume.render
 
 /**
