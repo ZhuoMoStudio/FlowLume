@@ -54,6 +54,7 @@ class MediaNotificationListener : NotificationListenerService() {
         super.onListenerDisconnected()
     }
 
+    @Suppress("DEPRECATION")
     private suspend fun parseAndEmit(sbn: StatusBarNotification, notif: Notification) {
         val extras = notif.extras
         // ① 优先：MediaSession Token → MediaController 完整元数据（含大图封面）

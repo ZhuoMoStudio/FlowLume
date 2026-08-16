@@ -1,9 +1,6 @@
 package com.zhuomo.flowlume.audio
 
 import android.content.Context
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.AudioPlaybackConfiguration
 import android.media.audiofx.Visualizer
 import android.util.Log
 
@@ -12,8 +9,8 @@ import android.util.Log
  * 竞品 Diffuse 同款方案 —— 无需「录制或投放」屏幕捕获授权，
  * 仅需 RECORD_AUDIO（麦克风权限名，但 Visualizer 不采集任何麦克风数据）。
  *
- * 数据来源：AudioManager.activePlaybackConfigurations 找到当前活跃播放会话，
- * Visualizer 绑定该会话获取波形/FFT，仅用于可视化分析。
+ * 实现：Visualizer(sessionId=0) 绑定系统全局输出混合流；
+ * Android 10+ 下持有 RECORD_AUDIO 权限即可访问其他应用输出音频的可视化数据。
  */
 class VisualizerCapture(private val context: Context) {
 
@@ -27,12 +24,11 @@ class VisualizerCapture(private val context: Context) {
 
     val isRunning: Boolean get() = visualizer?.enabled == true
 
-    /** 启动捕获；无活跃播放时绑定全局输出（sessionId=0） */
+    /** 启动捕获：绑定全局输出（sessionId=0） */
     fun start() {
         stop()
-        val sessionId = findActiveSessionId()
         val v = runCatching {
-            Visualizer(sessionId).apply {
+            Visualizer(0).apply {
                 setCaptureSize(Visualizer.getCaptureSizeRange()[1])
                 setDataCaptureListener(
                     object : Visualizer.OnDataCaptureListener {
@@ -55,32 +51,17 @@ class VisualizerCapture(private val context: Context) {
                 enabled = true
             }
         }.getOrElse { e ->
-            Log.w(TAG, "Visualizer start failed (session=$sessionId): ${e.message}")
+            Log.w(TAG, "Visualizer start failed: ${e.message}")
             null
         }
         visualizer = v
-        if (v != null) Log.i(TAG, "Visualizer running on session=$sessionId")
+        if (v != null) Log.i(TAG, "Visualizer running on global output")
     }
 
     fun stop() {
         runCatching { visualizer?.enabled = false }
         runCatching { visualizer?.release() }
         visualizer = null
-    }
-
-    private fun findActiveSessionId(): Int {
-        val am = context.getSystemService(AudioManager::class.java)
-        return runCatching {
-            am.activePlaybackConfigurations
-                .firstOrNull { cfg: AudioPlaybackConfiguration ->
-                    cfg.activeState == AudioPlaybackConfiguration.ACTIVE_STATE_ACTIVE &&
-                        cfg.audioAttributes.usage in listOf(
-                            AudioAttributes.USAGE_MEDIA,
-                            AudioAttributes.USAGE_GAME
-                        )
-                }
-                ?.audioSessionId
-        }.getOrDefault(null) ?: 0 // 0 = 全局输出混合
     }
 
     companion object {
