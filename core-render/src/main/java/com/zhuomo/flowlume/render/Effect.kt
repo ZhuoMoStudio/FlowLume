@@ -25,7 +25,7 @@ interface Effect {
     val meta: EffectMeta
     val phase: EffectPhase
 
-    fun onFrame(table: UniformTable, ctx: FrameContext, state: EffectState)
+    fun onFrame(table: UniformTable, ctx: FrameContext, state: EffectState) {}
 
     fun onParticles(batch: ParticleBatch, ctx: FrameContext, state: EffectState) {}
 }

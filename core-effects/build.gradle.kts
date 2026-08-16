@@ -20,4 +20,6 @@ dependencies {
     implementation(project(":core-config"))
     implementation(project(":core-audio"))
     implementation(project(":core-render"))
+    // ParticleBatch 超类型 Disposable 来自 gdx
+    implementation(libs.gdx)
 }
