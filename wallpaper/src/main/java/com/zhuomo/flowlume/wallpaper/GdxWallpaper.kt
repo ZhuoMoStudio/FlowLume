@@ -114,6 +114,6 @@ class GdxWallpaper(
         Gdx.gl = Gdx.gl20
         Gdx.gl30 = AndroidGL30()
         Gdx.app = WallpaperApplication()
-        Gdx.files = DefaultAndroidFiles(context)
+        Gdx.files = DefaultAndroidFiles(context.assets)
     }
 }

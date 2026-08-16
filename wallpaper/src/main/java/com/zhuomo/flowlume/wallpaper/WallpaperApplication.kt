@@ -43,7 +43,7 @@ class WallpaperApplication : Application {
     override fun setApplicationLogger(logger: ApplicationLogger) { this.logger = logger }
     override fun getApplicationLogger(): ApplicationLogger = logger
 
-    override fun getType(): ApplicationType = ApplicationType.Android
+    override fun getType(): Application.ApplicationType = Application.ApplicationType.Android
     override fun getVersion(): Int = android.os.Build.VERSION.SDK_INT
 
     override fun getJavaHeap(): Long =
