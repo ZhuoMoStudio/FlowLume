@@ -90,6 +90,14 @@ fun HomeScreen(navController: NavHostController) {
         }
     }
 
+    val projectionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            AppContainer.audioEngine.start(result.resultCode, result.data!!)
+        }
+    }
+
     val launchProjection: () -> Unit = {
         val pm = context.getSystemService(MediaProjectionManager::class.java)
         projectionLauncher.launch(pm.createScreenCaptureIntent())
@@ -100,13 +108,6 @@ fun HomeScreen(navController: NavHostController) {
     ) { granted ->
         audioGranted = granted
         if (granted) launchProjection()
-    }
-    val projectionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-            AppContainer.audioEngine.start(result.resultCode, result.data!!)
-        }
     }
 
     Column(
