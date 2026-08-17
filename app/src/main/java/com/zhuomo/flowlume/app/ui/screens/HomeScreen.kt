@@ -86,7 +86,6 @@ fun HomeScreen(navController: NavHostController) {
     }
     val audioDeniedMsg = stringResource(R.string.audio_perm_off)
     val restartingMsg = stringResource(R.string.listener_restarting)
-    val openWallpaperFailedMsg = stringResource(R.string.open_wallpaper_failed)
     val openFullscreenFailedMsg = stringResource(R.string.open_fullscreen_failed)
 
     // 音频权限 → Visualizer（无屏幕捕获弹窗）
@@ -203,6 +202,22 @@ fun HomeScreen(navController: NavHostController) {
                             style = MaterialTheme.typography.bodySmall,
                             color = FlowColors.TextSecondary
                         )
+                        if (!art?.album.isNullOrBlank()) {
+                            Text(
+                                stringResource(R.string.album_label, art?.album.orEmpty()),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = FlowColors.TextTertiary
+                            )
+                        }
+                        Text(
+                            text = if (art?.isPlaying == true) {
+                                stringResource(R.string.status_playing)
+                            } else {
+                                stringResource(R.string.status_paused)
+                            },
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (art?.isPlaying == true) FlowColors.Success else FlowColors.Warning
+                        )
                     }
                 }
             } else {
@@ -215,21 +230,23 @@ fun HomeScreen(navController: NavHostController) {
             if (!listenerEnabled) {
                 Spacer(Modifier.height(8.dp))
                 SecondaryButton(text = stringResource(R.string.restart_listener)) {
-                    val needsManual = RestartListenerHelper.restart(context)
-                    scope.launch {
-                        if (needsManual) {
-                            snackbar.showSnackbar(restartingMsg)
-                        } else {
-                            kotlinx.coroutines.delay(800)
-                            listenerEnabled =
-                                NotificationManagerCompatCompat.isListenerEnabled(context)
+                    when (RestartListenerHelper.restart(context)) {
+                        RestartListenerHelper.RestartResult.JUMPED_TO_SETTINGS -> {
+                            scope.launch { snackbar.showSnackbar(restartingMsg) }
+                        }
+                        RestartListenerHelper.RestartResult.RESTARTED_IN_APP -> {
+                            scope.launch {
+                                kotlinx.coroutines.delay(800)
+                                listenerEnabled =
+                                    NotificationManagerCompatCompat.isListenerEnabled(context)
+                            }
                         }
                     }
                 }
             }
         }
 
-        // 设置壁纸（失败时给出明确提示）
+        // 设置壁纸（系统壁纸选择器 + 失败兜底 + 操作引导）
         PrimaryButton(text = stringResource(R.string.set_wallpaper)) {
             val intent = Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER).apply {
                 putExtra(
@@ -239,8 +256,12 @@ fun HomeScreen(navController: NavHostController) {
             }
             val ok = runCatching { context.startActivity(intent) }.isSuccess
             if (!ok) {
-                scope.launch { snackbar.showSnackbar(openWallpaperFailedMsg) }
+                // 兜底：打开系统壁纸列表
+                runCatching {
+                    context.startActivity(Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER))
+                }
             }
+            scope.launch { snackbar.showSnackbar(stringResource(R.string.wallpaper_guide)) }
         }
 
         // 形态切换

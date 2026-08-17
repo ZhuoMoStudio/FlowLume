@@ -83,6 +83,11 @@ dependencies {
     implementation(libs.gdx)
     implementation(libs.gdx.backend.android)
     implementation(libs.gdx.freetype)
+    // LibGDX 1.12.x natives（修复 Couldn't load shared library 'gdx'）—— arm64 + armv7 覆盖真机
+    implementation(libs.gdx.natives.arm64)
+    implementation(libs.gdx.natives.armv7)
+    implementation(libs.gdx.freetype.natives.arm64)
+    implementation(libs.gdx.freetype.natives.armv7)
     implementation(libs.kotlinx.coroutines.android)
 }
 

@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,15 +30,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
 import com.zhuomo.flowlume.app.R
 import com.zhuomo.flowlume.app.di.AppContainer
 import com.zhuomo.flowlume.app.ui.useRenderConfig
 import com.zhuomo.flowlume.config.ConfigStore
 import com.zhuomo.flowlume.config.Mode
 import com.zhuomo.flowlume.config.RenderMode
+import com.zhuomo.flowlume.media.ArtBus
+import com.zhuomo.flowlume.media.ArtEvent
+import com.zhuomo.flowlume.media.ListenerStatus
+import com.zhuomo.flowlume.media.NotificationCenter
 import com.zhuomo.flowlume.ui.CheckRow
 import com.zhuomo.flowlume.ui.ConfirmDialog
 import com.zhuomo.flowlume.ui.FlowColors
@@ -45,6 +54,7 @@ import com.zhuomo.flowlume.ui.PrimaryButton
 import com.zhuomo.flowlume.ui.RadioRow
 import com.zhuomo.flowlume.ui.SectionLabel
 import com.zhuomo.flowlume.ui.SliderRow
+import com.zhuomo.flowlume.ui.StatusDot
 import kotlinx.coroutines.launch
 
 private val TONES = listOf(
@@ -61,6 +71,24 @@ fun RenderScreen() {
     val (config, update) = useRenderConfig(mode)
     var showCopyDialog by remember { mutableStateOf(false) }
 
+    // 实时获取状态（封面/歌曲信息/监听状态）
+    var art by remember { mutableStateOf<ArtEvent?>(null) }
+    var listenerEnabled by remember { mutableStateOf(true) }
+    LaunchedEffect(Unit) {
+        launch {
+            ArtBus.events.collect { art = it }
+        }
+        launch {
+            NotificationCenter.status.collect { s ->
+                when (s) {
+                    ListenerStatus.CONNECTED -> listenerEnabled = true
+                    ListenerStatus.REVOKED -> listenerEnabled = false
+                    else -> Unit
+                }
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -76,6 +104,69 @@ fun RenderScreen() {
             color = FlowColors.Accent,
             style = MaterialTheme.typography.labelMedium
         )
+
+        // 实时获取卡片：当前捕获的专辑封面与信息
+        FxCard(title = stringResource(R.string.live_capture)) {
+            if (art?.title != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    art?.artwork?.let { bmp ->
+                        Image(
+                            bitmap = bmp.asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(56.dp)
+                                .clip(RoundedCornerShape(8.dp)),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(Modifier.width(12.dp))
+                    }
+                    Column {
+                        Text("《${art?.title}》", color = FlowColors.TextPrimary)
+                        if (!art?.artist.isNullOrBlank()) {
+                            Text(art?.artist.orEmpty(), style = MaterialTheme.typography.bodySmall, color = FlowColors.TextSecondary)
+                        }
+                        if (!art?.album.isNullOrBlank()) {
+                            Text(
+                                stringResource(R.string.album_label, art?.album.orEmpty()),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = FlowColors.TextTertiary
+                            )
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            StatusDot(if (art?.isPlaying == true) FlowColors.Success else FlowColors.Warning)
+                            Spacer(Modifier.width(6.dp))
+                            Text(
+                                text = if (art?.isPlaying == true) {
+                                    stringResource(R.string.status_playing)
+                                } else {
+                                    stringResource(R.string.status_paused)
+                                },
+                                style = MaterialTheme.typography.bodySmall,
+                                color = FlowColors.TextTertiary
+                            )
+                        }
+                    }
+                }
+            } else {
+                Text(
+                    text = stringResource(R.string.live_capture_empty),
+                    color = FlowColors.TextTertiary,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+            Spacer(Modifier.height(6.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                StatusDot(if (listenerEnabled) FlowColors.Success else FlowColors.Warning)
+                Spacer(Modifier.width(6.dp))
+                Text(
+                    text = stringResource(
+                        if (listenerEnabled) R.string.listener_on else R.string.listener_off
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = FlowColors.TextTertiary
+                )
+            }
+        }
 
         // 流体设定
         FxCard(title = stringResource(R.string.fluid_card)) {

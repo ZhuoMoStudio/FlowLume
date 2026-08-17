@@ -1,56 +1,62 @@
 package com.zhuomo.flowlume.media
 
-import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 
 /**
- * 通知监听服务状态检测与恢复。
- * 背景：NotificationListenerService 由系统绑定，无公开 API 强制重绑。
- * 最佳实践：权限被撤销 → 跳转系统「通知使用权」设置页引导重新开启；
- * 权限存在但服务失活 → 尝试 hidden API requestRebind（失败降级为引导手动关闭/开启）。
+ * 通知监听服务状态检测与恢复（应用内重启，竞品同款）。
+ *
+ * 权限存在但服务失活：通过 PackageManager 禁用→启用组件，强制系统解绑后重新绑定，
+ * 全程不离开应用（竞品 Diffuse 的做法）。
+ * 权限被撤销：才跳转系统「通知使用权」设置页。
  */
 object RestartListenerHelper {
+
+    enum class RestartResult { RESTARTED_IN_APP, JUMPED_TO_SETTINGS }
 
     fun isEnabled(context: Context): Boolean =
         NotificationManagerCompatCompat.isListenerEnabled(context)
 
-    /**
-     * @return 执行说明：是否已跳转系统设置页（true=已跳转，需用户手动操作；false=已发起重绑）
-     */
-    fun restart(context: Context): Boolean {
+    fun restart(context: Context): RestartResult {
         if (!isEnabled(context)) {
-            // 未授权 → 引导进入系统「通知使用权」设置页
+            // 权限被撤销 → 引导进入系统「通知使用权」设置页
             context.startActivity(
                 Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             )
             NotificationCenter.emit(ListenerStatus.RESTARTING)
-            return true
+            return RestartResult.JUMPED_TO_SETTINGS
         }
-        // 已授权但可能失活 → 尝试触发系统重绑（隐藏方法，多数 ROM 上有效）
-        val rebound = runCatching {
-            val nm = context.getSystemService(NotificationManager::class.java)
-            val method = NotificationManager::class.java.getMethod(
-                "requestRebind", ComponentName::class.java
-            )
-            method.invoke(nm, ComponentName(context, MediaNotificationListener::class.java))
-            true
-        }.getOrDefault(false)
 
-        if (!rebound) {
-            // 降级：跳设置页，引导「先关闭再开启」
-            context.startActivity(
-                Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        // 应用内强制重绑：先禁用（系统解绑）→ 再启用（系统重新绑定）
+        val component = ComponentName(context, MediaNotificationListener::class.java)
+        val pm = context.packageManager
+        runCatching {
+            pm.setComponentEnabledSetting(
+                component,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP
             )
+            Handler(Looper.getMainLooper()).postDelayed({
+                runCatching {
+                    pm.setComponentEnabledSetting(
+                        component,
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP
+                    )
+                }
+            }, 300)
+        }.onFailure { e ->
+            Log.e(TAG, "in-app rebind failed: ${e.message}")
         }
         NotificationCenter.emit(ListenerStatus.RESTARTING)
-        Log.i(TAG, "restart requested, rebound=$rebound")
-        return !rebound
+        return RestartResult.RESTARTED_IN_APP
     }
 
     private const val TAG = "RestartNLS"

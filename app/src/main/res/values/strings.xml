@@ -27,7 +27,11 @@
     <string name="now_playing">NOW PLAYING</string>
     <string name="no_music">NO MUSIC DETECTED\nPlay music to automatically extract album art</string>
     <string name="restart_listener">Restart notification listener</string>
+    <string name="album_label">Album: %1$s</string>
+    <string name="status_playing">PLAYING</string>
+    <string name="status_paused">PAUSED</string>
     <string name="set_wallpaper">Set as wallpaper</string>
+    <string name="wallpaper_guide">请在壁纸列表中选择 FlowLume，点击「应用」并允许动态壁纸权限</string>
     <string name="render_mode">RENDER MODE</string>
     <string name="mode_wallpaper">Desktop wallpaper</string>
     <string name="mode_fullscreen">App fullscreen</string>
@@ -40,6 +44,10 @@
     <!-- Page 2 Render -->
     <string name="editing_wallpaper">EDITING: DESKTOP WALLPAPER</string>
     <string name="editing_fullscreen">EDITING: APP FULLSCREEN</string>
+    <string name="live_capture">LIVE CAPTURE 实时获取</string>
+    <string name="live_capture_empty">未捕获到播放中的音乐，播放后自动提取专辑封面</string>
+    <string name="listener_on">通知监听：已连接</string>
+    <string name="listener_off">通知监听：未连接</string>
     <string name="fluid_card">FLUID</string>
     <string name="fluid_scale">Fluid scale</string>
     <string name="flow_speed">Flow speed</string>
@@ -104,7 +112,7 @@
     <string name="separate_configs">Store wallpaper &amp; fullscreen settings independently</string>
     <string name="appearance_card">APPEARANCE</string>
     <string name="adaptive_icon">Adaptive launcher theming</string>
-    <string name="adaptive_icon_note">Takes effect after enabling "Themed icons" in system Settings (Android 13+). Monochrome layer is bundled.</string>
+    <string name="adaptive_icon_note">Themed icon follows system color (Android 13+)</string>
     <string name="theme_dark">DARK · pure black</string>
     <string name="theme_charcoal">CHARCOAL · dark grey</string>
     <string name="perf_card">PERFORMANCE</string>

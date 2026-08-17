@@ -79,17 +79,6 @@ fun SettingsScreen(navController: NavHostController) {
         }
 
         FxCard(title = stringResource(R.string.appearance_card)) {
-            Text(
-                text = stringResource(R.string.adaptive_icon),
-                style = MaterialTheme.typography.bodyMedium,
-                color = FlowColors.TextPrimary
-            )
-            Text(
-                text = stringResource(R.string.adaptive_icon_note),
-                style = MaterialTheme.typography.bodySmall,
-                color = FlowColors.TextTertiary
-            )
-            Spacer(Modifier.height(8.dp))
             RadioRow(stringResource(R.string.theme_dark), !charcoal) { AppContainer.charcoalTheme.value = false }
             RadioRow(stringResource(R.string.theme_charcoal), charcoal) { AppContainer.charcoalTheme.value = true }
         }

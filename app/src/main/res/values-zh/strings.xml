@@ -27,7 +27,11 @@
     <string name="now_playing">正在播放</string>
     <string name="no_music">未检测到播放中的音乐\n播放音乐后自动提取专辑封面</string>
     <string name="restart_listener">一键重启监听服务</string>
+    <string name="album_label">专辑：%1$s</string>
+    <string name="status_playing">正在播放</string>
+    <string name="status_paused">已暂停</string>
     <string name="set_wallpaper">设置壁纸</string>
+    <string name="wallpaper_guide">请在壁纸列表中选择 FlowLume，点击「应用」并允许动态壁纸权限</string>
     <string name="render_mode">运行形态</string>
     <string name="mode_wallpaper">桌面壁纸</string>
     <string name="mode_fullscreen">App 全屏</string>
@@ -40,6 +44,10 @@
     <!-- Page 2 Render -->
     <string name="editing_wallpaper">正在编辑：桌面壁纸配置</string>
     <string name="editing_fullscreen">正在编辑：App 全屏配置</string>
+    <string name="live_capture">实时获取</string>
+    <string name="live_capture_empty">未捕获到播放中的音乐，播放后自动提取专辑封面</string>
+    <string name="listener_on">通知监听：已连接</string>
+    <string name="listener_off">通知监听：未连接</string>
     <string name="fluid_card">流体设定</string>
     <string name="fluid_scale">流体缩放</string>
     <string name="flow_speed">流动速度</string>

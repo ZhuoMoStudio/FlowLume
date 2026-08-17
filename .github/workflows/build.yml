@@ -62,6 +62,7 @@ jobs:
           tag_name: v${{ steps.ver.outputs.version }}
           name: FlowLume v${{ steps.ver.outputs.version }}
           files: app/build/outputs/apk/release/*.apk
-          draft: true
+          draft: false
           prerelease: false
           generate_release_notes: true
+          update_release: true
