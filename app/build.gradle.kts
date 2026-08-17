@@ -84,10 +84,11 @@ dependencies {
     implementation(libs.gdx.backend.android)
     implementation(libs.gdx.freetype)
     // LibGDX 1.12.x natives（修复 Couldn't load shared library 'gdx'）—— arm64 + armv7 覆盖真机
-    implementation(libs.gdx.natives.arm64)
-    implementation(libs.gdx.natives.armv7)
-    implementation(libs.gdx.freetype.natives.arm64)
-    implementation(libs.gdx.freetype.natives.armv7)
+    // 注意：Version Catalog 不支持 classifier，故直接写完整坐标
+    implementation("com.badlogicgames.gdx:gdx-platform:1.12.1:natives-armeabi-v7a")
+    implementation("com.badlogicgames.gdx:gdx-platform:1.12.1:natives-arm64-v8a")
+    implementation("com.badlogicgames.gdx:gdx-freetype-platform:1.12.1:natives-armeabi-v7a")
+    implementation("com.badlogicgames.gdx:gdx-freetype-platform:1.12.1:natives-arm64-v8a")
     implementation(libs.kotlinx.coroutines.android)
 }
 

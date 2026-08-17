@@ -34,11 +34,6 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 gdx = { group = "com.badlogicgames.gdx", name = "gdx", version.ref = "gdx" }
 gdx-backend-android = { group = "com.badlogicgames.gdx", name = "gdx-backend-android", version.ref = "gdx" }
 gdx-freetype = { group = "com.badlogicgames.gdx", name = "gdx-freetype", version.ref = "gdx" }
-# LibGDX 1.12.x：natives 独立发布，需按 ABI 显式声明（backend AAR 不含 .so）
-gdx-natives-armv7 = { group = "com.badlogicgames.gdx", name = "gdx-platform", version.ref = "gdx", classifier = "natives-armeabi-v7a" }
-gdx-natives-arm64 = { group = "com.badlogicgames.gdx", name = "gdx-platform", version.ref = "gdx", classifier = "natives-arm64-v8a" }
-gdx-freetype-natives-armv7 = { group = "com.badlogicgames.gdx", name = "gdx-freetype-platform", version.ref = "gdx", classifier = "natives-armeabi-v7a" }
-gdx-freetype-natives-arm64 = { group = "com.badlogicgames.gdx", name = "gdx-freetype-platform", version.ref = "gdx", classifier = "natives-arm64-v8a" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

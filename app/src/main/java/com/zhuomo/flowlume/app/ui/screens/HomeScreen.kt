@@ -86,6 +86,7 @@ fun HomeScreen(navController: NavHostController) {
     }
     val audioDeniedMsg = stringResource(R.string.audio_perm_off)
     val restartingMsg = stringResource(R.string.listener_restarting)
+    val wallpaperGuideMsg = stringResource(R.string.wallpaper_guide)
     val openFullscreenFailedMsg = stringResource(R.string.open_fullscreen_failed)
 
     // 音频权限 → Visualizer（无屏幕捕获弹窗）
@@ -261,7 +262,7 @@ fun HomeScreen(navController: NavHostController) {
                     context.startActivity(Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER))
                 }
             }
-            scope.launch { snackbar.showSnackbar(stringResource(R.string.wallpaper_guide)) }
+            scope.launch { snackbar.showSnackbar(wallpaperGuideMsg) }
         }
 
         // 形态切换
