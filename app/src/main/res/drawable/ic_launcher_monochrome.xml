@@ -3,22 +3,23 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    <!-- 实心填充形状：保证各启动器 monochrome 图层兼容（部分启动器不渲染描边） -->
     <path
-        android:pathData="M14,54C30,36 48,70 62,52C76,34 92,68 94,54"
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="7"
-        android:strokeLineCap="round"
-        android:fillColor="#00000000" />
+        android:pathData="M54,30m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0"
+        android:fillColor="#FFFFFF" />
     <path
-        android:pathData="M14,72C32,60 50,84 64,70C78,56 92,78 94,70"
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="4"
-        android:strokeLineCap="round"
-        android:fillColor="#00000000" />
+        android:pathData="M26,52m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#FFFFFF" />
     <path
-        android:pathData="M30,88C40,80 52,90 60,84"
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="3"
-        android:strokeLineCap="round"
-        android:fillColor="#00000000" />
+        android:pathData="M44,66m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0"
+        android:fillColor="#FFFFFF" />
+    <path
+        android:pathData="M66,58m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#FFFFFF" />
+    <path
+        android:pathData="M80,74m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0"
+        android:fillColor="#FFFFFF" />
+    <path
+        android:pathData="M30,78m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0"
+        android:fillColor="#FFFFFF" />
 </vector>

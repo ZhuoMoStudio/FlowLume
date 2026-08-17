@@ -34,6 +34,8 @@
     <string name="config_independent">Both modes keep independent settings; copy with one tap in RENDER tab</string>
     <string name="open_fullscreen">Open fullscreen mode</string>
     <string name="listener_restarting">Listener restarting… check status shortly</string>
+    <string name="open_wallpaper_failed">Cannot open wallpaper picker. Your device/ROM may not support live wallpaper preview.</string>
+    <string name="open_fullscreen_failed">Cannot start fullscreen renderer (GL init failed). Please try a device restart.</string>
 
     <!-- Page 2 Render -->
     <string name="editing_wallpaper">EDITING: DESKTOP WALLPAPER</string>
@@ -102,7 +104,7 @@
     <string name="separate_configs">Store wallpaper &amp; fullscreen settings independently</string>
     <string name="appearance_card">APPEARANCE</string>
     <string name="adaptive_icon">Adaptive launcher theming</string>
-    <string name="adaptive_icon_note">Themed icon follows system color (Android 13+)</string>
+    <string name="adaptive_icon_note">Takes effect after enabling "Themed icons" in system Settings (Android 13+). Monochrome layer is bundled.</string>
     <string name="theme_dark">DARK · pure black</string>
     <string name="theme_charcoal">CHARCOAL · dark grey</string>
     <string name="perf_card">PERFORMANCE</string>

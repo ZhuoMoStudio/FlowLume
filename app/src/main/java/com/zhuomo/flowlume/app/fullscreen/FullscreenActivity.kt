@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
@@ -31,11 +32,12 @@ class FullscreenActivity : AndroidApplication() {
             r = 8; g = 8; b = 8; a = 0
         }
 
-        // 全屏渲染初始化失败兜底：捕获异常，避免整个 App 闪退
+        // 全屏渲染初始化失败兜底：捕获异常并明确提示（避免无反应）
         runCatching {
             initialize(FullscreenGame(), cfg)
-        }.onFailure {
-            android.util.Log.e("FlowLumeFullscreen", "LibGDX init failed", it)
+        }.onFailure { e ->
+            android.util.Log.e("FlowLumeFullscreen", "LibGDX init failed", e)
+            Toast.makeText(this, "Fullscreen renderer init failed: ${e.message}", Toast.LENGTH_LONG).show()
             finish()
             return
         }

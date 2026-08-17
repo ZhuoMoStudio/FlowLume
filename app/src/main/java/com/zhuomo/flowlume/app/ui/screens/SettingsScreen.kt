@@ -79,7 +79,11 @@ fun SettingsScreen(navController: NavHostController) {
         }
 
         FxCard(title = stringResource(R.string.appearance_card)) {
-            SwitchRow(stringResource(R.string.adaptive_icon), true) { }
+            Text(
+                text = stringResource(R.string.adaptive_icon),
+                style = MaterialTheme.typography.bodyMedium,
+                color = FlowColors.TextPrimary
+            )
             Text(
                 text = stringResource(R.string.adaptive_icon_note),
                 style = MaterialTheme.typography.bodySmall,

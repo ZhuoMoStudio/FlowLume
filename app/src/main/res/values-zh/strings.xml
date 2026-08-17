@@ -34,6 +34,8 @@
     <string name="config_independent">两种形态参数独立保存，可在渲染页一键互拷</string>
     <string name="open_fullscreen">打开全屏模式</string>
     <string name="listener_restarting">监听服务重启中…稍后查看状态</string>
+    <string name="open_wallpaper_failed">无法打开壁纸选择器，您的设备/ROM 可能不支持动态壁纸预览</string>
+    <string name="open_fullscreen_failed">无法启动全屏渲染（GL 初始化失败），请尝试重启设备</string>
 
     <!-- Page 2 Render -->
     <string name="editing_wallpaper">正在编辑：桌面壁纸配置</string>
@@ -102,7 +104,7 @@
     <string name="separate_configs">桌面/全屏模式相互独立储存参数</string>
     <string name="appearance_card">外观</string>
     <string name="adaptive_icon">启动器自适应着色</string>
-    <string name="adaptive_icon_note">图标随系统主题变色（Android 13+）</string>
+    <string name="adaptive_icon_note">需在系统「壁纸和样式 → 主题图标」中开启后生效（Android 13+）；已内置单色图层</string>
     <string name="theme_dark">DARK 纯黑深色</string>
     <string name="theme_charcoal">CHARCOAL 灰黑深色</string>
     <string name="perf_card">性能</string>
